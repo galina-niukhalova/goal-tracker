@@ -1,0 +1,55 @@
+.add {
+    display: flex;
+
+    border: 1px solid $color-grey-light-1;
+
+    &__name {
+        padding: 1rem 3rem;
+        flex: 1;
+
+        font-size: 1.6rem;
+        color: inherit;
+        border: none;
+        background-color: inherit;
+
+        &:focus {
+            outline: none;
+        }
+
+        &::-webkit-input-placeholder {
+            color: $color-grey-light-2;
+            font-weight: 100;
+        }
+    }
+
+    &__btn {
+        margin: .5rem;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+
+        font-size: 2rem;
+        color: $color-violet-1;
+        border: 1px solid $color-violet-2;
+        transition: all .2s;
+
+        position: relative;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:hover {
+            color: $color-violet-3;
+            font-weight: 400;
+        }
+
+        &:active {
+            transform: translateY(5%);
+        }
+
+        & i {
+            @include absCenter;
+        }
+    }
+}

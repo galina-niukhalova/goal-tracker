@@ -1,0 +1,70 @@
+.goal-list {
+    padding: 3rem 2rem; 
+
+    flex: 1;
+
+    border-right: 1px solid $color-grey-light-1;
+}
+
+.item {
+    padding: .5rem 0;
+    display: flex;
+    align-items: center;
+    color: inherit;
+
+    border-bottom: 1px dotted $color-grey-light-1;
+
+    &__status {
+
+        &--checkbox {
+            display: none;
+        }
+
+        &--label {
+            margin-right: 1rem;
+            display: inline-block;
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 1px solid $color-grey-light-2;
+            border-radius: 50%;
+        
+            transition: all .2s;
+            position: relative;
+
+            & i {
+                color: currentColor;
+                @include absCenter;
+            }
+
+            &:hover {
+                transform: scale(1.1);
+                color: $color-green;
+                border: 1px solid #b9e1dc;
+            }
+
+            &:active {
+                transform: translateY(5%);
+            }
+        }
+    }
+
+    &__name {
+        font-size: 1.4rem;
+        padding: .5rem 2rem;
+        color: inherit;
+        background-color: transparent;
+        border: none;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__progress {
+
+    }
+
+    &:not(:last-child) { 
+        margin-bottom: 1rem;
+    }
+}
