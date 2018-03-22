@@ -1,0 +1,112 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  font-weight: 300;
+  font-family: 'Lato', sans-serif;
+  background-color: #FBFBFB;
+  color: #555; }
+
+.container {
+  max-width: 120rem;
+  min-height: 100vh;
+  margin: auto;
+  box-shadow: 0 1px 1rem rgba(0, 0, 0, 0.2);
+  display: flex; }
+
+.left {
+  flex: 0 0 400px;
+  display: flex;
+  flex-direction: column; }
+
+.right {
+  flex: 1; }
+
+.goal-list {
+  padding: 3rem 2rem;
+  flex: 1;
+  border-right: 1px solid #e5e5e5; }
+
+.item {
+  padding: .5rem 0;
+  display: flex;
+  align-items: center;
+  color: inherit;
+  border-bottom: 1px dotted #e5e5e5; }
+  .item__status--checkbox {
+    display: none; }
+  .item__status--label {
+    margin-right: 1rem;
+    display: inline-block;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid #bbb;
+    border-radius: 50%;
+    transition: all .2s;
+    position: relative; }
+    .item__status--label i {
+      color: currentColor;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
+    .item__status--label:hover {
+      transform: scale(1.1);
+      color: #347970;
+      border: 1px solid #b9e1dc; }
+    .item__status--label:active {
+      transform: translateY(5%); }
+  .item__name {
+    font-size: 1.4rem;
+    padding: .5rem 2rem;
+    color: inherit;
+    background-color: transparent;
+    border: none; }
+    .item__name:focus {
+      outline: none; }
+  .item:not(:last-child) {
+    margin-bottom: 1rem; }
+
+.add {
+  display: flex;
+  border: 1px solid #e5e5e5; }
+  .add__name {
+    padding: 1rem 3rem;
+    flex: 1;
+    font-size: 1.6rem;
+    color: inherit;
+    border: none;
+    background-color: inherit; }
+    .add__name:focus {
+      outline: none; }
+    .add__name::-webkit-input-placeholder {
+      color: #bbb;
+      font-weight: 100; }
+  .add__btn {
+    margin: .5rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    font-size: 2rem;
+    color: #756C83;
+    border: 1px solid #e6e3e9;
+    transition: all .2s;
+    position: relative; }
+    .add__btn:focus {
+      outline: none; }
+    .add__btn:hover {
+      color: #544d5e;
+      font-weight: 400; }
+    .add__btn:active {
+      transform: translateY(5%); }
+    .add__btn i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
