@@ -1,14 +1,33 @@
 // Colors
+
+// base: color
 $color-grey-dark-1: #555;
 
+// base: background
+$color-light: #FBFBFB;
+
+// sections-line: border
 $color-grey-light-1: #e5e5e5;
+
+// add-item-field: placeholder: color
 $color-grey-light-2: #bbb;
 
-$color-green: #347970;
-$color-red: #F38181;
+// status:hover
+$color-green-1: #347970;
 
+// status--completed: color, border
+$color-green-2: #61C0BF;
+
+
+// btn-add: color
 $color-violet-1: #756C83;
+
+// btn-add: border
 $color-violet-2: #e6e3e9;
+
+// btn-add: hover: color
 $color-violet-3: #544d5e;
 
-$color-light: #FBFBFB;
+// btn: trash
+$color-red-1: #ae2353;
+

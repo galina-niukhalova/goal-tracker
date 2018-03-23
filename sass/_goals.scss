@@ -10,9 +10,34 @@
     padding: .5rem 0;
     display: flex;
     align-items: center;
+
+    font-size: 1.4rem;
     color: inherit;
 
     border-bottom: 1px dotted $color-grey-light-1;
+
+    &--completed {
+
+        & .item__status--label {
+            border: 1px solid $color-green-2;
+            color: $color-green-2;
+
+            &:hover {
+                transform: scale(1);
+                color: $color-green-2;
+                border: 1px solid $color-green-2;
+            }
+    
+            &:active {
+                transform: translateY(0);
+            }
+        }
+
+        & .item__name {
+            text-decoration: line-through;
+        }
+
+    }
 
     &__status {
 
@@ -25,46 +50,79 @@
             display: inline-block;
             width: 2.5rem;
             height: 2.5rem;
+
+            color: inherit;
             border: 1px solid $color-grey-light-2;
             border-radius: 50%;
         
             transition: all .2s;
             position: relative;
 
+            &:hover {
+                transform: scale(1.1);
+                color: $color-green-1;
+                border: 1px solid #b9e1dc;
+            }
+    
+            &:active {
+                transform: translateY(5%);
+            }
+
             & i {
                 color: currentColor;
                 @include absCenter;
-            }
-
-            &:hover {
-                transform: scale(1.1);
-                color: $color-green;
-                border: 1px solid #b9e1dc;
-            }
-
-            &:active {
-                transform: translateY(5%);
             }
         }
     }
 
     &__name {
-        font-size: 1.4rem;
+        flex: 1;
+        font-size: inherit;
         padding: .5rem 2rem;
-        color: inherit;
+        color: #777;
+
         background-color: transparent;
         border: none;
+
+        color: inherit;
+        text-decoration: none;
 
         &:focus {
             outline: none;
         }
     }
 
-    &__progress {
-
-    }
-
     &:not(:last-child) { 
         margin-bottom: 1rem;
+    }
+        
+}
+
+.item:hover .delete__btn
+ {
+    opacity: 1;
+    margin-left: 2rem;
+}
+
+.item__status--checkbox:hover ~ .delete__btn {
+    opacity: 0;
+    margin-left: -2rem;
+}
+
+.delete__btn {
+    margin-left: -2rem;
+    background-color: transparent;
+    border: none;
+
+    opacity: 0;
+    transition: all .2s;
+
+    & i {
+        color: $color-red-1;
+        font-size: 1.8rem;
+    }
+
+    &:focus {
+        outline: none;
     }
 }
