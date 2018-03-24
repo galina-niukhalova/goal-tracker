@@ -96,10 +96,6 @@ body {
   opacity: 1;
   margin-left: 2rem; }
 
-.item__status--checkbox:hover ~ .delete__btn {
-  opacity: 0;
-  margin-left: -2rem; }
-
 .delete__btn {
   margin-left: -2rem;
   background-color: transparent;
