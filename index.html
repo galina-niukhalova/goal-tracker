@@ -17,8 +17,8 @@
     <div class="container">
         <div class="left">
             <div class="add">
-                <input type="text" class="add__name" placeholder="Add a new goal">
-                <button class="add__btn btn">
+                <input type="text" class="add__name add__goal" placeholder="Add a new goal">
+                <button class="add__btn add-goal__btn btn">
                     <i class="icon ion-plus"></i>
                 </button>
             </div>
@@ -48,9 +48,47 @@
             </div>
         </div>
         <div class="right">
-            
+            <div class="header">
+                <h2 class="active-item__name">Read more books</h2>
+                <progress class="active-item__progress" value="20" max="100"></progress>
+            </div>
+            <div class="subgoals">
+                <div class="add">
+                    <input type="text" class="add__name add__subgoal" placeholder="Add a new subgoal">
+                    <button class="add__btn add-subgoal__btn btn">
+                        <i class="icon ion-plus"></i>
+                    </button>
+                </div>
+                <div class="subgoal-list">
+                    <div class="item item--active" id='90'>
+                        <input type="checkbox" class="item__status--checkbox" id='status-90'>
+                        <label for="status-90" class="item__status--label">
+                            <i class="icon ion-checkmark"></i>
+                        </label>
+                        <input type="text" class="item__name" readonly value='Learn new words every day'>
+                        <div class="item__progress">50%</div>
+                        <button class="more-options__btn">
+                        </button>
+                        <div class="more-options__menu menu--active">
+                            <ul class="menu">
+                                <li class="menu__item menu__delete">
+                                    <i class="icon ion-trash-b"></i>Delete
+                                </li>
+                                <li class="menu__item menu__edit">
+                                    <i class="icon ion-edit"></i>Edit
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comment">
+                <textarea class="comment__text" rows="4" cols="50" placeholder="Write a comment..."></textarea>
+            </div>
+
         </div>
     </div>
 </body>
 <script src="js/script.js"></script>
+
 </html>

@@ -6,6 +6,22 @@
     border-right: 1px solid $color-grey-light-1;
 }
 
+.subgoals {
+    margin: 0 auto;
+    width: 70%;
+    padding: 2rem 0;
+    flex: 1;
+
+    & .add__btn {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+}
+
+.subgoal-list {
+    padding: 2rem 0;
+}
+
 .item {
     padding: .5rem 0;
     display: flex;
@@ -15,6 +31,7 @@
     color: inherit;
 
     border-bottom: 1px dotted $color-grey-light-1;
+    position: relative;
 
     &--completed {
 
@@ -95,30 +112,97 @@
     &:not(:last-child) { 
         margin-bottom: 1rem;
     }
+
+    &:hover, 
+    &-goal--active {
+        background-color: rgba($color-grey-light-1, .2);
+    }
         
 }
 
-.item:hover .delete__btn
- {
-    opacity: 1;
-    margin-left: 2rem;
+.item:hover .more-options__btn {
+    visibility: visible;
 }
 
-
-.delete__btn {
-    margin-left: -2rem;
-    background-color: transparent;
+.more-options__btn {
+    margin-left: 2rem;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: $color-grey-dark-3;
+    width: 4px;
+    height: 4px;
     border: none;
+    position: relative;
 
-    opacity: 0;
-    transition: all .2s;
+    transition: all .1s;
+    visibility: hidden;
 
-    & i {
-        color: $color-red-1;
-        font-size: 1.8rem;
+    &::before, 
+    &::after {
+        content: "";
+        display: inline-block;
+        border-radius: 50%;
+        background-color: $color-grey-dark-3;
+        width: 4px;
+        height: 4px;
+
+        position: absolute;
+        left: 0;
+    }
+
+    &::before {
+        top: -7px;
+    }
+    &::after {
+        top: 7px;
     }
 
     &:focus {
         outline: none;
     }
+
+    &:hover {
+        background-color: $color-grey-dark-2;
+
+        &::before,
+        &::after {
+            background-color: $color-grey-dark-2;
+        }
+    }
+}
+
+.more-options__menu {
+    border-radius: 5px;
+    box-shadow: 0 1px 1rem rgba(black, .2);
+    background-color: white;
+    
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    display: none;
+    z-index: 100;
+
+    transform: translateY(100%);
+}
+
+.menu {
+    list-style: none;
+
+    &__item {
+        padding: .5rem 1.5rem;
+        transition: all .2s;
+
+        & i {
+            margin-right: 1rem;
+        }
+
+        &:hover {
+            background-color: $color-grey-light-1;
+        }
+    }
+}
+
+.menu--active {
+    display: block;
 }
