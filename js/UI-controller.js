@@ -5,27 +5,18 @@ const getDOMStrings = () => {
     return DOMStrings;
 };
 
-const getNewGoalName = () => {
-    return document.querySelector(DOMStrings.inputNewGoalName).value;
-};
-
-const getNewSubgoalName = () => {
-    return document.querySelector(DOMStrings.inputNewSubgoalName).value;
+const getNewItemName = (type) => {
+    return document.querySelector(DOMStrings.inputNewItemName(type)).value;
 };
 
 const clearFields = () => {
-    document.querySelector(DOMStrings.inputNewGoalName).value = '';
-    document.querySelector(DOMStrings.inputNewSubgoalName).value = '';
+    document.querySelector(DOMStrings.inputNewItemName('goal')).value = '';
+    document.querySelector(DOMStrings.inputNewItemName('subgoal')).value = '';
 };
 
-const addNewGoal = (id, name) => {
-    document.querySelector(DOMStrings.goalsList)
-        .insertAdjacentHTML('beforeend', getItemTemplete(id, name));
-};
-
-const addNewSubgoal = (id, name) => {
-    document.querySelector(DOMStrings.subgoalList)
-        .insertAdjacentHTML('beforeend', getItemTemplete(id, name));
+const addNewItem = (id, name, type) => {
+    document.querySelector(DOMStrings.itemsList(type))
+        .insertAdjacentHTML('beforeend', getItemTemplete({ id, name }));
 };
 
 const deleteItem = (id) => {
@@ -34,16 +25,30 @@ const deleteItem = (id) => {
 };
 
 const updateItemProgress = (id, progress) => {
+    if (!progress)
+        progress = '---';
+    else progress =
+        `${progress}%`;
+
     document.getElementById(id)
         .childNodes
         .forEach(element => {
             if (element.className === DOMStrings._itemProgress)
-                element.textContent = `${progress}%`;
+                element.textContent = progress;
         });
 };
 
-const completeItem = (item) => {
-    item.classList.add(DOMStrings._itemStatusCompleted);
+const updateItemStatus = (id, status) => {
+    document.getElementById(id)
+        .childNodes
+        .forEach(element => {
+            if (element.className === DOMStrings._itemStatus)
+                element.checked = status;
+        });
+}
+
+const completeItem = (id) => {
+    document.getElementById(id).classList.add(DOMStrings._itemStatusCompleted);
 };
 
 // 1. Add new goal
@@ -60,9 +65,9 @@ const updateHeader = (name, progress = 0) => {
 const updateSubgoalsList = (list = []) => {
     let html = '';
 
-    list.forEach(item => html += getItemTemplete(item.id, item.name));
+    list.forEach(item => html += getItemTemplete(item));
 
-    document.querySelector(DOMStrings.subgoalList)
+    document.querySelector(DOMStrings.itemsList('subgoal'))
         .innerHTML = html;
 };
 
@@ -70,51 +75,45 @@ const updateComment = (comment = '') => {
     document.querySelector(DOMStrings.itemComment).value = comment;
 };
 
-const getActiveItemID = () => {
-    const activeItem = document.querySelector(DOMStrings.itemStateActive);
-    if (activeItem) return parseInt(activeItem.id);
+const changeActiveGoal = (id) => {
+    const previousItem = document.querySelector(DOMStrings.stateGoalActive);
 
-    return null;
-};
-
-const changeActiveItem = (activeItemID) => {
-    const previousItemID = getActiveItemID();
-
-    if (previousItemID != null) {
-        document.getElementById(previousItemID)
+    if (previousItem) {
+        previousItem
             .classList
-            .remove(DOMStrings._itemStatusActive);
+            .remove(DOMStrings._stateGoalActive);
     }
 
-    document.getElementById(activeItemID).classList.add(DOMStrings._itemStatusActive);
-};
-
-const setActiveGoal = (id) => {
-    if (document.querySelector('.item-goal--active'))
-        document.querySelector('.item-goal--active').classList.remove('item-goal--active');
-    document.getElementById(id).classList.add('item-goal--active');
+    document.getElementById(id).classList.add(DOMStrings._stateGoalActive);
 };
 
 const toggleContextMenu = (item) => {
     item.querySelector(DOMStrings.itemContextMenu).classList.toggle(DOMStrings._contextMenuStatusOpen);
 };
 
+const showUpButton = () => {
+    document.querySelector(DOMStrings.btnUp).classList.add(DOMStrings._btnUpActive);
+}
+
+const hideUpButton = () => {
+    document.querySelector(DOMStrings.btnUp).classList.remove(DOMStrings._btnUpActive);
+}
+
 
 export default {
     getDOMStrings,
-    getNewGoalName,
-    getNewSubgoalName,
+    getNewItemName,
     clearFields,
-    addNewGoal,
-    addNewSubgoal,
+    addNewItem,
     deleteItem,
     updateItemProgress,
+    updateItemStatus,
     completeItem,
     updateHeader,
     updateSubgoalsList,
     updateComment,
-    getActiveItemID,
-    changeActiveItem,
-    setActiveGoal,
-    toggleContextMenu
+    changeActiveGoal,
+    toggleContextMenu,
+    showUpButton,
+    hideUpButton
 }

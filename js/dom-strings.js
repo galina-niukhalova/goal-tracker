@@ -2,32 +2,29 @@ export default {
     // ----ITEM properties----
     itemProgress: '.item__progress',
     itemComment: '.comment',
-    itemStateActive: '.item--active',
     itemContextMenu: '.more-options__menu',
 
-    // ----LEFT----
+    // goals
     btnAdd: '.item-add__btn',
-    btnAddGoal: '.goal-add__btn',
-    inputNewGoalName: '.goal-add__input',
-    goalsList: '.goal-list',
-
-    // ----RIGHT----
+    btnAddItem: type => `.${type}-add__btn`,
+    stateGoalActive: '.item-goal--active',
+    inputNewItemName: type => `.${type}-add__input`,
+    itemsList: type => `.${type}-list`,
+    
     // header
     headerName: '.item-active__name',
     headerProgress: '.item-active__progress',
 
-    // subgoals
-    btnAddSubgoal: '.subgoal-add__btn',
-    inputNewSubgoalName: '.subgoal-add__input',
-    subgoalList: '.subgoal-list',
-
+    btnUp: '.btn-up',
+    _btnUpActive: 'btn-up--active',
 
     //----Names of classes----
     // item
     _itemName: 'item__name',
-    _itemStatusActive: 'item--active',
     _itemStatusCompleted: 'item--completed',
     _itemProgress: 'item__progress',
+    _itemStatus: 'item__status--checkbox',
+    _stateGoalActive: 'item-goal--active',
 
     // context menu
     _btnMoreOptions: 'more-options__btn',

@@ -2,177 +2,205 @@ import DataController from './data-controller';
 import UIController from './UI-controller';
 
 
-// ----- LISTENERS ----- //
-(function () {
-    const DOM = UIController.getDOMStrings();
-
-    const itemListListener = function ({className, parentNode: parent}) {
-        // CONTEXT MENU
-        if (className.includes(DOM._btnMoreOptions))
-            ctrTaggleContextMenu(parent);
-
-        // EDIT item
-        if (className.includes(DOM._btnEditItem))
-            ctrEditItem(parent.parentNode.parentNode);
-    }
-
-    // ---- Press ENTER ----
-    document.addEventListener('keypress', event => {
-        if (event.keyCode === 13 || event.which === 13) {
-            ctrAddGoal();
-            ctrAddSubgoal();
-        }
-        console.log(DataController.test());
-    });
-
-    // ---- Click on btn <Add new goal>  ----
-    document.querySelector(DOM.btnAddGoal).addEventListener('click', ctrAddGoal);
-
-    // ---- Click on btn <Add new subgoal>  ----
-    document.querySelector(DOM.btnAddSubgoal).addEventListener('click', ctrAddSubgoal);
-
-    document.querySelector(DOM.goalsList).addEventListener('click', ({target}) => {
-        // ---- Click on <Complete goal>  ----
-        if (target.type === 'checkbox') ctrCompleteGoal(target.parentNode);
-
-        // ---- Click on <another goal>  ----
-        if (target.className.includes(DOM._itemName))
-            showItem(parseInt(target.parentNode.id));
-
-        // DELETE item
-        if (target.className.includes(DOM._btnDeleteItem))
-            ctrDeleteGoal(target.parentNode.parentNode.parentNode);
-
-        itemListListener(target);
-    });
-
-    document.querySelector(DOM.subgoalList).addEventListener('click', ({target}) => {
-        itemListListener(event.target);
-
-        // ---- Click on <another subgoal>  ----
-        if (target.className.includes(DOM._itemName))
-            updateRightPanel(parseInt(target.parentNode.id));
-
-        // DELETE item
-        if (target.className.includes(DOM._btnDeleteItem))
-            ctrDeleteItem(event.target.parentNode.parentNode.parentNode);
-    });
-
-    // COMMENT
-    document.querySelector(DOM.itemComment).addEventListener('change', ({target}) => {
-        ctrUpdateComment(target.value);
-    });
-
-})();
-
-const ctrAddGoal = function () {
-    // UI: Get goal name
-    const name = UIController.getNewGoalName();
+const ctrAddItem = (type) => {
+    let item, parentID;
+    const name = UIController.getNewItemName(type);
 
     if (name) {
-        // Data: Add new item
-        const item = DataController.addItem(name);
+        switch (type) {
+            case 'goal':
+                item = DataController.addItem(name);
+                UIController.addNewItem(item.id, name, type);
+                ctrChangeActiveItem(item);
+                ctrSetActiveGoal(item.id);
+                break;
 
-        // UI: Goal list - add new item
-        UIController.addNewGoal(item.id, name);
-
-        // Change active item
-        showItem(item.id);
+            case 'subgoal':
+                parentID = DataController.getActiveItem();
+                item = DataController.addItem(name, parentID);
+                UIController.addNewItem(item.id, name, type);
+                
+                ctrUpdateParents(item.id);
+                break;
+        }
 
         // UI: Clear field
         UIController.clearFields();
     }
 };
 
-const ctrAddSubgoal = function () {
-    // UI: Get subgoal name
-    const name = UIController.getNewSubgoalName();
+const ctrGoUp = () => {
+    let activeItem = DataController.getActiveItem();
+    const activeGoal = DataController.getActiveGoal();
 
-    // UI: Get active item
-    const parentID = DataController.getActiveItem();
+    activeItem = DataController.getItemParent(activeItem);
+    ctrChangeActiveItem(activeItem);
 
-    if (name) {
-        // Data: add item
-        const item = DataController.addItem(name, parentID);
-
-        // UI: Subgoal list - add new item
-        UIController.addNewSubgoal(item.id, name);
-        UIController.clearFields();
-    }
-}
-
-const ctrDeleteItem = function (item) {
-    const id = parseInt(item.id);
-
-    // Data: delete item
-    DataController.deleteItem(id);
-
-    // UI: delete item
-    UIController.deleteItem(id);
-}
-
-const ctrDeleteGoal = function (item) {
-    const id = parseInt(item.id);
-    const activeItem = DataController.getNextItemID(id);
-
-    ctrDeleteItem(item);
-
-    // change active item
-    if (activeItem != null) updateRightPanel(activeItem);
+    if (activeGoal === activeItem.id) UIController.hideUpButton();
 };
 
-const ctrEditItem = function (item) {
-    //
-}
+// ----- LISTENERS ----- //
+(function () {
+    const DOM = UIController.getDOMStrings();
 
-const ctrCompleteGoal = function (item) {
-    const id = parseInt(item.id);
+    // ---- Press ENTER ----
+    document.addEventListener('keypress', event => {
+        if (event.keyCode === 13 || event.which === 13) {
+            ctrAddItem('goal');
+            ctrAddItem('subgoal');
+        }
+        console.log(DataController.test());
+    });
 
-    // Data: complete item
-    DataController.completeItem(id);
-
-    // Data: update item progress
-    DataController.calcItemProgress(id);
-    const progress = DataController.getItemByID(id).progress;
-
-    // UI: update progress
-    UIController.updateItemProgress(id, progress);
-
-    // UI: update item's visible 
-    UIController.completeItem(item);
-}
-
-const ctrUpdateComment = function (comment) {
-    DataController.setComment(UIController.getActiveItemID(), comment);
-}
-
-const ctrTaggleContextMenu = function (item) {
-    UIController.toggleContextMenu(item);
-}
+    const setListeners = type => {
+        // ---- Click on btn <Add new ...>  ----
+        document.querySelector(DOM.btnAddItem(type))
+            .addEventListener('click', ctrAddItem.bind(null, type));
 
 
-const showItem = function (id) {
-    // set Active Goal
-    UIController.setActiveGoal(id);
+        document.querySelector(DOM.itemsList(type)).addEventListener('click', ({ target }) => {
+            const { className, parentNode: parent } = target;
 
-    updateRightPanel(id);
-}
+            // ---- Click on <another item>  ----
+            if (className.includes(DOM._itemName))
+                ctrClickOn(type, parent);
 
-const updateRightPanel = function (id) {
-    // Data get item 
-    const item = DataController.getItemByID(id);
+            // CONTEXT MENU
+            if (className.includes(DOM._btnMoreOptions))
+                ctrTaggleContextMenu(parent);
 
+            // EDIT item
+            if (className.includes(DOM._btnEditItem))
+                ctrEditItem(parent.parentNode.parentNode);
+
+            // DELETE item
+            if (className.includes(DOM._btnDeleteItem))
+                ctrDeleteItem(parent.parentNode.parentNode, type);
+
+            // COMPLETE ITEM
+            if (target.type === 'checkbox')
+                ctrCompleteItem(target.parentNode, type);
+        });
+
+    };
+
+    setListeners('goal');
+    setListeners('subgoal');
+
+    // COMMENT
+    document.querySelector(DOM.itemComment).addEventListener('change', ({ target }) => {
+        ctrUpdateComment(target.value);
+    });
+
+    document.querySelector(DOM.btnUp).addEventListener('click', ctrGoUp);
+
+})();
+
+const ctrChangeActiveItem = ({ id, name, progress, subItems, comment }) => {
     DataController.setActiveItem(id);
 
-    // UI: Change active item
-    UIController.changeActiveItem(id);
+    UIController.updateHeader(name, progress);
+    UIController.updateSubgoalsList(subItems);
+    UIController.updateComment(comment);
+};
 
-    // UI: Header - update name, progress
-    UIController.updateHeader(item.name, item.progress);
+const ctrSetActiveGoal = id => {
+    DataController.setActiveGoal(id);
+    UIController.changeActiveGoal(id);
+};
 
-    // UI: Subgoal list - update
-    UIController.updateSubgoalsList(item.subItems);
+const ctrClickOn = (block, itemDOM) => {
+    const ID = parseInt(itemDOM.id);
+    const item = DataController.getItemByID(ID);
 
-    // UI: Comment - update
-    UIController.updateComment(item.comment);
+    switch (block) {
+        case 'goal':
+            ctrSetActiveGoal(ID);
+            break;
+        case 'subgoal':
+            UIController.showUpButton();
+            break;
+    }
+
+    ctrChangeActiveItem(item);
+};
+
+const ctrDeleteItem = (item, type) => {
+    const ID = parseInt(item.id);
+
+    switch (type) {
+        case 'goal':
+            const activeItem = DataController.getNextItemID(ID);
+            if (activeItem != null) ctrChangeActiveItem(activeItem);
+            break;
+    }
+
+    DataController.deleteItem(ID);
+    UIController.deleteItem(ID);
+};
+
+const ctrEditItem = (item) => {
+    //
+};
+
+const ctrCompleteItem = (item, type) => {
+    let id = parseInt(item.id);
+
+    // Data: update status, progress
+    DataController.completeItem(id);
+    DataController.calcItemProgress(id);
+
+
+    // UI: update progress
+    const { name, progress } = DataController.getItemByID(id);
+    UIController.updateItemProgress(id, progress);
+
+    //calc Progress of parents, update progress 
+    switch (type) {
+        case 'subgoal':
+            // calc parent progress
+            ctrUpdateParents(id);
+            break;
+        case 'goal':
+            // update Header
+            if (DataController.getActiveItem() === id)
+                UIController.updateHeader(name, progress);
+            break;
+    };
+
+    // Update item's visible 
+    UIController.completeItem(id);
+};
+
+const ctrUpdateParents = id => {
+    const activeGoal = DataController.getActiveGoal();
+    let parentID = null, parent;
+
+    // CALC ALL PARENT'S PROGRESS
+    while (parentID !== activeGoal) {
+        parent = DataController.getItemParent(id);
+        parentID = parent.id;
+        DataController.calcItemProgress(parentID);
+        DataController.calcItemStatus(parentID);
+        id = parentID;
+    }
+
+    // UPDATE GOAL
+    UIController.updateItemProgress(parentID, parent.progress);
+    if (parent.progress === 100) UIController.completeItem(parentID);
+
+    // UPDATE HEADER
+    const activeItem = DataController.getItemByID(DataController.getActiveItem());
+    UIController.updateHeader(activeItem.name, activeItem.progress);
+
 }
+
+
+const ctrUpdateComment = (comment) => {
+    DataController.setComment(DataController.getActiveItem(), comment);
+};
+
+const ctrTaggleContextMenu = (item) => {
+    UIController.toggleContextMenu(item);
+};
+

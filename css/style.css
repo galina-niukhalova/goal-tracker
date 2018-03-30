@@ -88,10 +88,8 @@ body {
     color: #45803F; }
     .item--completed .item__status--label:hover {
       transform: scale(1);
-      color: #D4E74F;
-      border: 1px solid #D4E74F; }
-    .item--completed .item__status--label:active {
-      transform: translateY(0); }
+      color: #45803F;
+      border: 1px solid #45803F; }
   .item--completed .item__name {
     text-decoration: line-through #2b7e8e; }
   .item__status--checkbox {
@@ -109,8 +107,6 @@ body {
       transform: scale(1.1);
       color: #D4E74F;
       border: 1px solid #D4E74F; }
-    .item__status--label:active {
-      transform: translateY(5%); }
     .item__status--label i {
       color: currentColor;
       position: absolute;
@@ -248,7 +244,8 @@ body {
   transition: all .2s;
   grid-row: 2 / 3;
   grid-column: goal-end / subgoal-start;
-  align-self: center; }
+  align-self: center;
+  visibility: hidden; }
   .btn-up i {
     font-size: 2.5rem;
     color: #555; }
@@ -256,6 +253,8 @@ body {
     outline: none; }
   .btn-up:active {
     transform: translateY(2px); }
+  .btn-up--active {
+    visibility: visible; }
 
 .item-active {
   padding: 1rem 0 1.5rem 0;
@@ -273,7 +272,7 @@ body {
     border-radius: 2px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset; }
   .item-active__progress[value]::-webkit-progress-value {
-    background-color: #D4E74F; }
+    background-color: #57a250; }
   .item-active__comment {
     grid-row: 3 / -1;
     grid-column: subgoal-start / subgoal-end; }

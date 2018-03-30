@@ -19,8 +19,23 @@ class Item {
             this.progress = 100;
         }
         else {
-            /// 
+            if (!this.subItems.length) {
+                this.progress = 0;
+            }
+            else {
+                let completedSubs = 0;
+                for (let item of this.subItems) {
+                    if (item.status) completedSubs++;
+                }
+
+                this.progress = Math.floor((completedSubs / this.subItems.length) * 100);
+            }
         }
+    }
+
+    calcStatus() {
+        if (this.progress === 100)
+            this.status = true;
     }
 }
 
@@ -28,22 +43,23 @@ let items = [];
 let activeItem;
 let activeGoal;
 
-const findItemByID = (id, parent = items) => {
+const findItemByID = (id, itemsList = items, parent = null) => {
     let target;
 
-    for (let item of parent) {
-        if (item.id === id) return { item, parent };
+    for (let item of itemsList) {
+        if (item.id === id) return { item, itemsList, parent };
 
         if (item.subItems.length) {
-            target = findItemByID(id, item.subItems);
-            if (target.item) return { item: target.item, parent: target.parent };
+            target = findItemByID(id, item.subItems, item);
+            if (target)
+                return { item: target.item, itemsList: target.itemsList, parent: target.parent };
         }
     }
     return null;
 }
 
 const findSiblingItem = function (id) {
-    const parent = findItemByID(id).parent;
+    const parent = findItemByID(id).itemsList;
 
     if (parent && parent.length > 1) {
         const itemIndex = parent.findIndex(item => item.id === id);
@@ -74,13 +90,10 @@ const renderID = function () {
 }
 
 const addItem = (name, parent) => {
-    console.log(parent);
     const id = renderID();
     const newItem = new Item(id, name);
 
     if (parent) {
-        console.log('return: ', findItemByID(parent));
-        console.log('el: ', findItemByID(parent).item);
         findItemByID(parent)
             .item
             .subItems
@@ -94,9 +107,9 @@ const addItem = (name, parent) => {
 };
 
 const deleteItem = (id) => {
-    let {item, parent} = findItemByID(id);
+    let { item, itemsList } = findItemByID(id);
 
-    parent.splice(parent.indexOf(item), 1);
+    itemsList.splice(itemsList.indexOf(item), 1);
 };
 
 const completeItem = (id) => {
@@ -107,8 +120,16 @@ const calcItemProgress = (id) => {
     findItemByID(id).item.calcProgress();
 };
 
+const calcItemStatus = (id) => {
+    findItemByID(id).item.calcStatus();
+}
+
 const getItemByID = (id) => {
     return findItemByID(id).item;
+};
+
+const getItemParent = (id) => {
+    return findItemByID(id).parent;
 };
 
 const getActiveItem = (id) => {
@@ -143,7 +164,9 @@ export default {
     deleteItem,
     completeItem,
     calcItemProgress,
+    calcItemStatus,
     getItemByID,
+    getItemParent,
     getActiveItem,
     getActiveGoal,
     getNextItemID,
