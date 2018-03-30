@@ -9,6 +9,10 @@
     &__input::-webkit-input-placeholder {
         color: #9cd4e0; 
     }
+
+    &__input {
+        color: black;
+    }
 }
 
 .subgoal-add {
@@ -16,6 +20,10 @@
 
     &__input::-webkit-input-placeholder {
         color: $color-grey-light-2; 
+    }
+
+    &__input {
+        color: inherit;
     }
 }
 
@@ -29,7 +37,6 @@
         padding: 1rem 3rem;
         flex: 1;
     
-        color: inherit;
         background-color: inherit;
         font-size: 1.6rem;
         border: none;

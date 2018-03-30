@@ -9,6 +9,11 @@ const getNewItemName = (type) => {
     return document.querySelector(DOMStrings.inputNewItemName(type)).value;
 };
 
+const getItemName = (id) => {
+    return Array.from(document.getElementById(id).childNodes)
+    .find(el => el.className === DOMStrings._itemName).value;
+}
+
 const clearFields = () => {
     document.querySelector(DOMStrings.inputNewItemName('goal')).value = '';
     document.querySelector(DOMStrings.inputNewItemName('subgoal')).value = '';
@@ -51,17 +56,11 @@ const completeItem = (id) => {
     document.getElementById(id).classList.add(DOMStrings._itemStatusCompleted);
 };
 
-// 1. Add new goal
-// 2. Change active item
 const updateHeader = (name, progress = 0) => {
     document.querySelector(DOMStrings.headerName).textContent = name;
     document.querySelector(DOMStrings.headerProgress).value = progress;
 };
 
-// 1. Add new goal
-// 2. Change active item
-
-// 2. ?? (Add new subgoal
 const updateSubgoalsList = (list = []) => {
     let html = '';
 
@@ -99,10 +98,25 @@ const hideUpButton = () => {
     document.querySelector(DOMStrings.btnUp).classList.remove(DOMStrings._btnUpActive);
 }
 
+const activeAddSubgoal = (isActive) => {
+    document.querySelector(DOMStrings.inputNewItemName('subgoal')).readOnly = !isActive;
+}
+
+const activeChangeName = (item, isActive) => {
+
+    const itemName = Array.from(item.childNodes)
+        .find(el => el.className === DOMStrings._itemName);
+
+    itemName.readOnly = !isActive;
+
+    if (isActive) itemName.focus();
+}
+
 
 export default {
     getDOMStrings,
     getNewItemName,
+    getItemName,
     clearFields,
     addNewItem,
     deleteItem,
@@ -115,5 +129,7 @@ export default {
     changeActiveGoal,
     toggleContextMenu,
     showUpButton,
-    hideUpButton
+    hideUpButton,
+    activeAddSubgoal,
+    activeChangeName
 }

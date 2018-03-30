@@ -45,6 +45,8 @@ body {
         background-color: #fff; }
         .goal-list .item .more-options__btn:hover::before, .goal-list .item .more-options__btn:hover::after {
           background-color: #fff; }
+    .goal-list .item--completed .item__status--label {
+      background-color: white; }
 
 .item-list {
   padding: 2rem; }
@@ -78,7 +80,7 @@ body {
           background-color: #555; }
 
 .item {
-  padding: .5rem 0;
+  padding: .5rem .5rem;
   display: flex;
   align-items: center;
   font-size: 1.4rem;
@@ -91,7 +93,7 @@ body {
       color: #45803F;
       border: 1px solid #45803F; }
   .item--completed .item__name {
-    text-decoration: line-through #2b7e8e; }
+    text-decoration: line-through #555; }
   .item__status--checkbox {
     display: none; }
   .item__status--label {
@@ -137,8 +139,8 @@ body {
   margin-right: .5rem;
   border-radius: 50%;
   display: inline-block;
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   border: none;
   position: relative;
   transition: all .1s;
@@ -147,8 +149,8 @@ body {
     content: "";
     display: inline-block;
     border-radius: 50%;
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
     position: absolute;
     left: 0; }
   .more-options__btn::before {
@@ -191,11 +193,15 @@ body {
   border-bottom: 1px dashed #2b7e8e; }
   .goal-add__input::-webkit-input-placeholder {
     color: #9cd4e0; }
+  .goal-add__input {
+    color: black; }
 
 .subgoal-add {
   border-bottom: 1px dashed #e5e5e5; }
   .subgoal-add__input::-webkit-input-placeholder {
     color: #bbb; }
+  .subgoal-add__input {
+    color: inherit; }
 
 .item-add {
   align-self: stretch;
@@ -204,7 +210,6 @@ body {
   .item-add__input {
     padding: 1rem 3rem;
     flex: 1;
-    color: inherit;
     background-color: inherit;
     font-size: 1.6rem;
     border: none; }

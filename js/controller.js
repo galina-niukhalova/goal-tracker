@@ -13,14 +13,17 @@ const ctrAddItem = (type) => {
                 UIController.addNewItem(item.id, name, type);
                 ctrChangeActiveItem(item);
                 ctrSetActiveGoal(item.id);
+                UIController.activeAddSubgoal(true);
                 break;
 
             case 'subgoal':
                 parentID = DataController.getActiveItem();
                 item = DataController.addItem(name, parentID);
                 UIController.addNewItem(item.id, name, type);
-                
+
                 ctrUpdateParents(item.id);
+                let breadCrumbs = DataController.getBreadCrumbs(parentID);
+                UIController.updateHeader(breadCrumbs, DataController.getItemByID(parentID).progress);
                 break;
         }
 
@@ -39,6 +42,15 @@ const ctrGoUp = () => {
     if (activeGoal === activeItem.id) UIController.hideUpButton();
 };
 
+const ctrInit = () => {
+    UIController.updateHeader('Welcome');
+    UIController.updateSubgoalsList();
+    UIController.updateComment();
+
+    // Add subgoal = Read Only
+    UIController.activeAddSubgoal(false);
+};
+
 // ----- LISTENERS ----- //
 (function () {
     const DOM = UIController.getDOMStrings();
@@ -48,8 +60,10 @@ const ctrGoUp = () => {
         if (event.keyCode === 13 || event.which === 13) {
             ctrAddItem('goal');
             ctrAddItem('subgoal');
+
+            if(event.target.className.includes(DOM._itemName)) ctrSaveItem(event.target.parentNode);
         }
-        console.log(DataController.test());
+        // console.log(DataController.test());
     });
 
     const setListeners = type => {
@@ -84,9 +98,6 @@ const ctrGoUp = () => {
 
     };
 
-    setListeners('goal');
-    setListeners('subgoal');
-
     // COMMENT
     document.querySelector(DOM.itemComment).addEventListener('change', ({ target }) => {
         ctrUpdateComment(target.value);
@@ -94,11 +105,16 @@ const ctrGoUp = () => {
 
     document.querySelector(DOM.btnUp).addEventListener('click', ctrGoUp);
 
+    setListeners('goal');
+    setListeners('subgoal');
+    ctrInit();
+
 })();
 
 const ctrChangeActiveItem = ({ id, name, progress, subItems, comment }) => {
     DataController.setActiveItem(id);
 
+    name = DataController.getBreadCrumbs(id);
     UIController.updateHeader(name, progress);
     UIController.updateSubgoalsList(subItems);
     UIController.updateComment(comment);
@@ -130,8 +146,14 @@ const ctrDeleteItem = (item, type) => {
 
     switch (type) {
         case 'goal':
-            const activeItem = DataController.getNextItemID(ID);
-            if (activeItem != null) ctrChangeActiveItem(activeItem);
+            const activeItem = DataController.getNextItem(ID);
+            if (activeItem != null) {
+                ctrChangeActiveItem(activeItem);
+                ctrSetActiveGoal(activeItem.id);
+            }
+            else {
+                ctrInit();
+            }
             break;
     }
 
@@ -140,8 +162,22 @@ const ctrDeleteItem = (item, type) => {
 };
 
 const ctrEditItem = (item) => {
-    //
+    UIController.activeChangeName(item, true);
+    UIController.toggleContextMenu(item);
 };
+
+const ctrSaveItem = (itemDOM) => {
+    const ID = parseInt(itemDOM.id);
+
+    const name = UIController.getItemName(ID);
+    const item = DataController.getItemByID(ID);
+    item.name = name;
+
+    UIController.activeChangeName(itemDOM, false);
+
+    if(ID === DataController.getActiveItem())
+        UIController.updateHeader(name, item.progress)
+}
 
 const ctrCompleteItem = (item, type) => {
     let id = parseInt(item.id);
@@ -194,7 +230,6 @@ const ctrUpdateParents = id => {
     UIController.updateHeader(activeItem.name, activeItem.progress);
 
 }
-
 
 const ctrUpdateComment = (comment) => {
     DataController.setComment(DataController.getActiveItem(), comment);

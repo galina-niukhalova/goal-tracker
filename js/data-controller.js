@@ -140,9 +140,9 @@ const getActiveGoal = () => {
     return activeGoal;
 }
 
-const getNextItemID = (id) => {
+const getNextItem = (id) => {
     if (findSiblingItem(id))
-        return findSiblingItem(id).id;
+        return findSiblingItem(id);
 
     return null;
 };
@@ -159,6 +159,24 @@ const setActiveGoal = (id) => {
     activeGoal = id;
 };
 
+const getBreadCrumbs = (id) => {
+    let itemParam = findItemByID(id);
+
+    let parent = itemParam.parent;
+    let name = itemParam.item.name;
+    let count = 2;
+
+    while (parent !== null) {
+        if(count > 0) name = `${parent.name} / ${name}`;
+        else if(count === 0) name = `... / ${name}`;
+
+        id = parent.id;
+        parent = findItemByID(id).parent;
+        count --;
+    }
+    return name;
+}
+
 export default {
     addItem,
     deleteItem,
@@ -169,10 +187,11 @@ export default {
     getItemParent,
     getActiveItem,
     getActiveGoal,
-    getNextItemID,
+    getNextItem,
     setComment,
     setActiveItem,
     setActiveGoal,
+    getBreadCrumbs,
     test: function () {
         return items;
     }

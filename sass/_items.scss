@@ -31,6 +31,8 @@
                 &::after { background-color: $color-white; }
             }
         }
+
+        &--completed .item__status--label { background-color: white; }
     }
 }
 
@@ -89,7 +91,7 @@
 
 
 .item {
-    padding: .5rem 0;
+    padding: .5rem .5rem;
     display: flex;
     align-items: center;
 
@@ -109,11 +111,10 @@
             }
         }
         
-        & .item__name { text-decoration: line-through $color-secondary-blue-1; }
+        & .item__name { text-decoration: line-through $color-main-grey; }
     }
 
     &__status {
-
         &--checkbox { display: none; }
 
         &--label {
@@ -179,8 +180,8 @@
     border-radius: 50%;
     display: inline-block;
 
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
     border: none;
     position: relative;
 
@@ -193,8 +194,8 @@
         display: inline-block;
         border-radius: 50%;
         
-        width: 4px;
-        height: 4px;
+        width: 5px;
+        height: 5px;
 
         position: absolute;
         left: 0;
