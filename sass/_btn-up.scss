@@ -1,0 +1,26 @@
+.btn-up {
+    width: 4rem;
+    height: 3.5rem;
+
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 2.5rem rgba(black, .1);
+    transition: all .2s;
+
+    grid-row: 2 / 3;
+    grid-column: goal-end / subgoal-start;
+    align-self: center;
+
+    & i {
+        font-size: 2.5rem;
+        color: $color-main-grey;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:active  {
+        transform: translateY(2px);
+    }
+}

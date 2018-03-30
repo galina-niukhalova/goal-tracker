@@ -1,35 +1,35 @@
 // Colors
+$color-white: #fff;
 
-// base: color
-$color-grey-dark-1: #555;
-$color-grey-dark-2: #666;
-$color-grey-dark-3: #888;
+// items
+$color-main-blue-1: #49b3c9; // background goal
+$color-main-blue-2: #f4fafc; // background-subgoal
+
+$color-secondary-blue-1: #2b7e8e; // hover
+$color-secondary-blue-2: #37a0b5; // completed
+$color-secondary-blue-3: #d9eef5; // subgoal list: border
+
+// base font-color
+$color-main-grey: #555;
 
 // base: background
 $color-light: #FBFBFB;
 
-// sections-line: border
-$color-grey-light-1: #e5e5e5;
-
+$color-grey-light-1: #e5e5e5; 
 // add-item-field: placeholder: color
 $color-grey-light-2: #bbb;
+$color-grey-light-3: #f6f6f6;
 
-// status:hover
-$color-green-1: #347970;
+// btn-more-options 
+$color-secondary-grey-1: #e6e6e6;
 
-// status--completed: color, border
-$color-green-2: #61C0BF;
+// status
+// $color-green-2: #51974a; //:hover
+$color-green-2: #D4E74F;
+$color-green-1: #45803F; // completed
 
-
-// btn-add: color
-$color-violet-1: #756C83;
-
-// btn-add: border
-$color-violet-2: #e6e3e9;
-
-// btn-add: hover: color
-$color-violet-3: #544d5e;
-
-// btn: trash
-$color-red-1: #ae2353;
+// btn-add:
+$color-violet-1: #756C83;  //color
+$color-violet-2: #e6e3e9; // border
+$color-violet-3: #544d5e; // hover: color 
 

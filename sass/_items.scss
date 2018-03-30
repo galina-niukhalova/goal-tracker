@@ -1,26 +1,92 @@
 .goal-list {
-    padding: 3rem 2rem; 
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 0 40px rgba(0, 0, 0, 0.1);
 
-    flex: 1;
+    grid-column: goal-start / goal-end;
+    grid-row: 2 / -1;
 
-    border-right: 1px solid $color-grey-light-1;
-}
+    background-color: $color-main-blue-1;
 
-.subgoals {
-    margin: 0 auto;
-    width: 70%;
-    padding: 2rem 0;
-    flex: 1;
+    & .item {
+        color: $color-white;
+        border-bottom: 1px dotted $color-secondary-blue-2;
 
-    & .add__btn {
-        width: 3.5rem;
-        height: 3.5rem;
+        &:hover { background-color: $color-secondary-blue-2; }
+
+        &__status--label {
+            border: 1px solid $color-white;
+        }
+
+        & .more-options__btn {
+            background-color: $color-secondary-grey-1;
+        
+            &::before, 
+            &::after {
+                background-color: $color-secondary-grey-1;
+            }
+
+            &:hover {
+                background-color: $color-white;
+        
+                &::before,
+                &::after { background-color: $color-white; }
+            }
+        }
     }
 }
 
-.subgoal-list {
-    padding: 2rem 0;
+.item-list {
+    padding: 2rem;
 }
+
+.subgoal {
+
+    &-container {
+        grid-row: 2 / 3;
+        grid-column: subgoal-start / subgoal-end;
+    
+        display: flex;
+        flex-direction: column;
+
+        box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.1);
+    
+        & .add__btn {
+            width: 3.5rem;
+            height: 3.5rem;
+        }
+    }
+
+    &-list {
+        flex: 1;
+
+        & .item {
+            color: $color-main-grey;
+            border-bottom: 1px dotted $color-secondary-blue-3;
+
+            &:hover { background-color: $color-grey-light-3 }
+
+            &__status--label {
+                border: 1px solid $color-violet-2;
+            }
+
+            & .more-options__btn {
+                background-color: $color-grey-light-2;
+            
+                &::before, 
+                &::after {
+                    background-color: $color-grey-light-2;
+                }
+
+                &:hover {
+                    background-color: $color-main-grey;
+            
+                    &::before,
+                    &::after { background-color: $color-main-grey; }
+                }
+            }
+        }
+    }
+}
+
 
 .item {
     padding: .5rem 0;
@@ -28,16 +94,13 @@
     align-items: center;
 
     font-size: 1.4rem;
-    color: inherit;
-
-    border-bottom: 1px dotted $color-grey-light-1;
     position: relative;
 
     &--completed {
 
         & .item__status--label {
-            border: 1px solid $color-green-2;
-            color: $color-green-2;
+            border: 1px solid $color-green-1;
+            color: $color-green-1;
 
             &:hover {
                 transform: scale(1);
@@ -45,22 +108,15 @@
                 border: 1px solid $color-green-2;
             }
     
-            &:active {
-                transform: translateY(0);
-            }
+            &:active { transform: translateY(0); }
         }
-
-        & .item__name {
-            text-decoration: line-through;
-        }
-
+        
+        & .item__name { text-decoration: line-through $color-secondary-blue-1; }
     }
 
     &__status {
 
-        &--checkbox {
-            display: none;
-        }
+        &--checkbox { display: none; }
 
         &--label {
             margin-right: 1rem;
@@ -69,7 +125,6 @@
             height: 2.5rem;
 
             color: inherit;
-            border: 1px solid $color-grey-light-2;
             border-radius: 50%;
         
             transition: all .2s;
@@ -77,8 +132,8 @@
 
             &:hover {
                 transform: scale(1.1);
-                color: $color-green-1;
-                border: 1px solid #b9e1dc;
+                color: $color-green-2;
+                border: 1px solid $color-green-2;
             }
     
             &:active {
@@ -113,9 +168,9 @@
         margin-bottom: 1rem;
     }
 
-    &:hover, 
+
     &-goal--active {
-        background-color: rgba($color-grey-light-1, .2);
+        background-color: $color-secondary-blue-1;
     }
         
 }
@@ -126,9 +181,10 @@
 
 .more-options__btn {
     margin-left: 2rem;
+    margin-right: .5rem;
     border-radius: 50%;
     display: inline-block;
-    background-color: $color-grey-dark-3;
+
     width: 4px;
     height: 4px;
     border: none;
@@ -142,7 +198,7 @@
         content: "";
         display: inline-block;
         border-radius: 50%;
-        background-color: $color-grey-dark-3;
+        
         width: 4px;
         height: 4px;
 
@@ -150,31 +206,17 @@
         left: 0;
     }
 
-    &::before {
-        top: -7px;
-    }
-    &::after {
-        top: 7px;
-    }
+    &::before { top: -7px; }
+    &::after { top: 7px; }
 
-    &:focus {
-        outline: none;
-    }
-
-    &:hover {
-        background-color: $color-grey-dark-2;
-
-        &::before,
-        &::after {
-            background-color: $color-grey-dark-2;
-        }
-    }
+    &:focus { outline: none;}
 }
 
 .more-options__menu {
     border-radius: 5px;
     box-shadow: 0 1px 1rem rgba(black, .2);
-    background-color: white;
+    color: $color-main-grey;
+    background-color: $color-white;
     
     position: absolute;
     right: 0;

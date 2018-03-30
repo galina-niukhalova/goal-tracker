@@ -2,18 +2,18 @@ import DataController from './data-controller';
 import UIController from './UI-controller';
 
 
+// ----- LISTENERS ----- //
 (function () {
-    console.log('set up...');
     const DOM = UIController.getDOMStrings();
 
-    const itemListListener = function (target) {
+    const itemListListener = function ({className, parentNode: parent}) {
         // CONTEXT MENU
-        if (target.className.includes(DOM._btnMoreOptions))
-            ctrTaggleContextMenu(event.target.parentNode);
+        if (className.includes(DOM._btnMoreOptions))
+            ctrTaggleContextMenu(parent);
 
         // EDIT item
-        if (target.className.includes(DOM._btnEditItem))
-            ctrEditItem(target.parentNode.parentNode.parentNode);
+        if (className.includes(DOM._btnEditItem))
+            ctrEditItem(parent.parentNode.parentNode);
     }
 
     // ---- Press ENTER ----
@@ -22,7 +22,7 @@ import UIController from './UI-controller';
             ctrAddGoal();
             ctrAddSubgoal();
         }
-        // console.log(DataController.test2());
+        console.log(DataController.test());
     });
 
     // ---- Click on btn <Add new goal>  ----
@@ -31,42 +31,36 @@ import UIController from './UI-controller';
     // ---- Click on btn <Add new subgoal>  ----
     document.querySelector(DOM.btnAddSubgoal).addEventListener('click', ctrAddSubgoal);
 
-    document.querySelector(DOM.goalsList).addEventListener('click', event => {
-        const target = event.target;
-        const className = target.className;
-
+    document.querySelector(DOM.goalsList).addEventListener('click', ({target}) => {
         // ---- Click on <Complete goal>  ----
         if (target.type === 'checkbox') ctrCompleteGoal(target.parentNode);
 
         // ---- Click on <another goal>  ----
-        if (className.includes(DOM._itemName))
+        if (target.className.includes(DOM._itemName))
             showItem(parseInt(target.parentNode.id));
 
         // DELETE item
-        if (className.includes(DOM._btnDeleteItem))
+        if (target.className.includes(DOM._btnDeleteItem))
             ctrDeleteGoal(target.parentNode.parentNode.parentNode);
 
         itemListListener(target);
     });
 
-    document.querySelector(DOM.subgoalList).addEventListener('click', event => {
-        const target = event.target;
-        const className = target.className;
-
+    document.querySelector(DOM.subgoalList).addEventListener('click', ({target}) => {
         itemListListener(event.target);
 
         // ---- Click on <another subgoal>  ----
-        if (className.includes(DOM._itemName))
+        if (target.className.includes(DOM._itemName))
             updateRightPanel(parseInt(target.parentNode.id));
 
         // DELETE item
-        if (className.includes(DOM._btnDeleteItem))
+        if (target.className.includes(DOM._btnDeleteItem))
             ctrDeleteItem(event.target.parentNode.parentNode.parentNode);
     });
 
     // COMMENT
-    document.querySelector(DOM.itemComment).addEventListener('change', event => {
-        ctrUpdateComment(event.target.value);
+    document.querySelector(DOM.itemComment).addEventListener('change', ({target}) => {
+        ctrUpdateComment(target.value);
     });
 
 })();
@@ -95,7 +89,7 @@ const ctrAddSubgoal = function () {
     const name = UIController.getNewSubgoalName();
 
     // UI: Get active item
-    const parentID = UIController.getActiveItemID();
+    const parentID = DataController.getActiveItem();
 
     if (name) {
         // Data: add item
@@ -119,7 +113,7 @@ const ctrDeleteItem = function (item) {
 
 const ctrDeleteGoal = function (item) {
     const id = parseInt(item.id);
-    const activeItem = DataController.getNextItem(id);
+    const activeItem = DataController.getNextItemID(id);
 
     ctrDeleteItem(item);
 
@@ -139,7 +133,7 @@ const ctrCompleteGoal = function (item) {
 
     // Data: update item progress
     DataController.calcItemProgress(id);
-    const progress = DataController.getItemProgress(id);
+    const progress = DataController.getItemByID(id).progress;
 
     // UI: update progress
     UIController.updateItemProgress(id, progress);
@@ -167,6 +161,8 @@ const showItem = function (id) {
 const updateRightPanel = function (id) {
     // Data get item 
     const item = DataController.getItemByID(id);
+
+    DataController.setActiveItem(id);
 
     // UI: Change active item
     UIController.changeActiveItem(id);

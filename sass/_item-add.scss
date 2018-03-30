@@ -1,0 +1,70 @@
+.goal-add {
+    grid-column: 1 / span 1;
+    align-self: center;
+
+    background-color: $color-main-blue-1;
+    border: none;
+    border-bottom: 1px dashed $color-secondary-blue-1;
+
+    &__input::-webkit-input-placeholder {
+        color: #9cd4e0; 
+    }
+}
+
+.subgoal-add {
+    border-bottom: 1px dashed $color-grey-light-1;
+
+    &__input::-webkit-input-placeholder {
+        color: $color-grey-light-2; 
+    }
+}
+
+.item-add {
+    align-self: stretch;
+
+    display: flex;
+    align-items: center;
+
+    &__input {
+        padding: 1rem 3rem;
+        flex: 1;
+    
+        color: inherit;
+        background-color: inherit;
+        font-size: 1.6rem;
+        border: none;
+
+        &:focus {
+            outline: none;
+        }
+
+        &::-webkit-input-placeholder {
+            font-weight: 100;
+        }
+    }
+
+    &__btn {
+        margin: .5rem;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+
+        font-size: 2rem;
+        color: $color-violet-1;
+        border: 1px solid $color-violet-2;
+        transition: all .2s;
+
+        position: relative;
+
+        &:focus { outline: none; }
+
+        &:hover {
+            color: $color-violet-3;
+            font-weight: 400;
+        }
+
+        &:active { transform: translateY(5%); }
+
+        & i { @include absCenter; }
+    }
+}
