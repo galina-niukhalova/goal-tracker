@@ -14,6 +14,7 @@ const ctrAddItem = (type) => {
                 ctrChangeActiveItem(item);
                 ctrSetActiveGoal(item.id);
                 UIController.activeAddSubgoal(true);
+                UIController.hideUpButton();
                 break;
 
             case 'subgoal':
@@ -132,6 +133,7 @@ const ctrClickOn = (block, itemDOM) => {
     switch (block) {
         case 'goal':
             ctrSetActiveGoal(ID);
+            UIController.hideUpButton();
             break;
         case 'subgoal':
             UIController.showUpButton();

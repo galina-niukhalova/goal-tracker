@@ -4,10 +4,11 @@
   "description": "A tool for ...",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
     "watch:sass": "node-sass sass/main.scss css/style.css -w",
     "prefix:css": "postcss --use autoprefixer -b 'last 10 versions' css/style.comp.css -o css/style.prefix.css",
-    "build:css": "npm-run-all watch:sass prefix:css"
+    "build:css": "npm-run-all watch:sass prefix:css",
+    "build:webpack": "webpack --mode development --watch",
+    "start": "npm-run-all --parallel build:css build:webpack"  
   },
   "author": "Galina",
   "license": "MIT",

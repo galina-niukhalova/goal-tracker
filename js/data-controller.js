@@ -19,16 +19,15 @@ class Item {
             this.progress = 100;
         }
         else {
-            if (!this.subItems.length) {
+            const totalSubs = this.subItems.length;
+
+            if (!totalSubs) {
                 this.progress = 0;
             }
             else {
-                let completedSubs = 0;
-                for (let item of this.subItems) {
-                    if (item.status) completedSubs++;
-                }
+                let completedSubs = this.subItems.filter(el => el.status).length;
 
-                this.progress = Math.floor((completedSubs / this.subItems.length) * 100);
+                this.progress = Math.floor((completedSubs / totalSubs) * 100);
             }
         }
     }
@@ -43,32 +42,36 @@ let items = [];
 let activeItem;
 let activeGoal;
 
-const findItemByID = (id, itemsList = items, parent = null) => {
-    let target;
+const findItemSubs = parent => {
+    return parent ? parent.subItems : items;
+}
 
-    for (let item of itemsList) {
-        if (item.id === id) return { item, itemsList, parent };
+const findItemByID = (id, parent = null) => {
+    let itemList, item;
+    
+    itemList = findItemSubs(parent);
+
+    for (let itemPosition in itemList) {
+        let item = itemList[itemPosition];
+
+        if (item.id === id) return { item, parent, itemPosition };
 
         if (item.subItems.length) {
-            target = findItemByID(id, item.subItems, item);
-            if (target)
-                return { item: target.item, itemsList: target.itemsList, parent: target.parent };
+            let target = findItemByID(id, item);
+            if (target) return target;
         }
-    }
+    };
+
     return null;
 }
 
 const findSiblingItem = function (id) {
-    const parent = findItemByID(id).itemsList;
+    const { parent, itemPosition } = findItemByID(id);
+    let parentSubs = findItemSubs(parent);
 
-    if (parent && parent.length > 1) {
-        const itemIndex = parent.findIndex(item => item.id === id);
+    if (parentSubs && parentSubs.length > 1)
+        return parentSubs[itemPosition + 1] || parentSubs[itemPosition - 1];
 
-        if (parent[itemIndex + 1])
-            return parent[itemIndex + 1];
-        else
-            return parent[itemIndex - 1];
-    }
     return null;
 }
 
@@ -83,15 +86,15 @@ const renderID = function () {
 
             if (el.subItems.length) findMaxID(el.subItems);
         });
-    }
-
+    };
     findMaxID(items);
+
     return maxId + 1;
 }
 
 const addItem = (name, parent) => {
-    const id = renderID();
-    const newItem = new Item(id, name);
+    const ID = renderID();
+    const newItem = new Item(ID, name);
 
     if (parent) {
         findItemByID(parent)
@@ -107,9 +110,9 @@ const addItem = (name, parent) => {
 };
 
 const deleteItem = (id) => {
-    let { item, itemsList } = findItemByID(id);
+    let { parent, itemPosition } = findItemByID(id);
 
-    itemsList.splice(itemsList.indexOf(item), 1);
+    findItemSubs(parent).splice(itemPosition, 1);
 };
 
 const completeItem = (id) => {
@@ -132,6 +135,19 @@ const getItemParent = (id) => {
     return findItemByID(id).parent;
 };
 
+const getAllItemParents = (id) => {
+    let parents = [];
+
+    while (id) {
+        parent = getItemParent(id);
+        if (parent)
+            parents.push(parent);
+
+        id = parent;
+    }
+    return parents;
+}
+
 const getActiveItem = (id) => {
     return activeItem;
 };
@@ -141,10 +157,7 @@ const getActiveGoal = () => {
 }
 
 const getNextItem = (id) => {
-    if (findSiblingItem(id))
-        return findSiblingItem(id);
-
-    return null;
+    return findSiblingItem(id);
 };
 
 const setComment = (id, comment) => {
@@ -167,12 +180,12 @@ const getBreadCrumbs = (id) => {
     let count = 2;
 
     while (parent !== null) {
-        if(count > 0) name = `${parent.name} / ${name}`;
-        else if(count === 0) name = `... / ${name}`;
+        if (count > 0) name = `${parent.name} / ${name}`;
+        else if (count === 0) name = `... / ${name}`;
 
         id = parent.id;
         parent = findItemByID(id).parent;
-        count --;
+        count--;
     }
     return name;
 }
@@ -185,45 +198,18 @@ export default {
     calcItemStatus,
     getItemByID,
     getItemParent,
+    getAllItemParents,
     getActiveItem,
     getActiveGoal,
     getNextItem,
     setComment,
     setActiveItem,
     setActiveGoal,
+    // change it
     getBreadCrumbs,
     test: function () {
         return items;
     }
 }
 
-
-
-    // test: function () {
-    //     const item1 = new Item(1, 'g1');
-    //     const item2 = new Item(2, 'g2');
-    //     const item3 = new Item(3, 'g3');
-    //     items = [item1, item2, item3];
-
-    //     const subItem1 = new Item(4, 'sub1');
-    //     const subItem2 = new Item(5, 'sub2');
-    //     const subItem3 = new Item(6, 'sub3');
-
-    //     const subItem4 = new Item(7, 'subsub1');
-    //     const subItem5 = new Item(8, 'subsub2');
-    //     const subItem6 = new Item(9, 'subsub3');
-
-    //     item1.subItems.push(subItem1);
-    //     item2.subItems.push(subItem2);
-    //     item2.subItems.push(subItem3);
-
-    //     subItem3.subItems.push(subItem4);
-    //     subItem3.subItems.push(subItem5);
-    //     subItem3.subItems.push(subItem6);
-
-    //     console.log(items);
-    //     var item = findItemByID(8);
-    //     return item.name;
-
-    // },
 
