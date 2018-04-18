@@ -70,7 +70,7 @@ const findItemByID = (id, parent = null) => {
         }
     };
 
-    return null;
+    return {item: null, parent: null, itemPosition: null};;
 }
 
 const findSiblingItem = function (id) {
@@ -120,6 +120,7 @@ const addItem = (name, parent) => {
 const deleteItem = (id) => {
     let { parent, itemPosition } = findItemByID(id);
 
+   
     findItemSubs(parent).splice(itemPosition, 1);
 };
 
