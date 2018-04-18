@@ -38,9 +38,17 @@ class Item {
     }
 }
 
-let items = [];
-let activeItem;
-let activeGoal;
+let items, activeItem, activeGoal;
+
+const setDefaultSettings = () => {
+    items = [];
+    activeItem = null;
+    activeGoal = null;
+}
+
+const getItems = () => {
+    return items;
+}
 
 const findItemSubs = parent => {
     return parent ? parent.subItems : items;
@@ -190,7 +198,7 @@ const getBreadCrumbs = (id) => {
     return name;
 }
 
-export default {
+export {
     addItem,
     deleteItem,
     completeItem,
@@ -206,10 +214,9 @@ export default {
     setActiveItem,
     setActiveGoal,
     // change it
-    getBreadCrumbs,
-    test: function () {
-        return items;
-    }
+    getBreadCrumbs, 
+    setDefaultSettings,
+    getItems
 }
 
 

@@ -113,7 +113,7 @@ const activeChangeName = (item, isActive) => {
 }
 
 
-export default {
+export {
     getDOMStrings,
     getNewItemName,
     getItemName,

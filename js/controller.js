@@ -1,5 +1,5 @@
-import DataController from './data-controller';
-import UIController from './UI-controller';
+import * as DataController from './data-controller';
+import * as UIController from './UI-controller';
 
 
 const ctrAddItem = (type) => {
@@ -44,6 +44,7 @@ const ctrGoUp = () => {
 };
 
 const ctrInit = () => {
+    DataController.setDefaultSettings();
     UIController.updateHeader('Welcome');
     UIController.updateSubgoalsList();
     UIController.updateComment();

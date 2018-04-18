@@ -8,14 +8,17 @@
     "prefix:css": "postcss --use autoprefixer -b 'last 10 versions' css/style.comp.css -o css/style.prefix.css",
     "build:css": "npm-run-all watch:sass prefix:css",
     "build:webpack": "webpack --mode development --watch",
-    "start": "npm-run-all --parallel build:css build:webpack"  
+    "start": "npm-run-all --parallel build:css build:webpack",
+    "test": "babel-node spec/run.js"
   },
   "author": "Galina",
   "license": "MIT",
   "devDependencies": {
-    "lodash": "^3.10.1",
     "autoprefixer": "^7.2.6",
+    "babel-cli": "^6.26.0",
     "concat": "^1.0.3",
+    "jasmine": "^3.1.0",
+    "lodash": "^3.10.1",
     "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.2",
     "postcss-cli": "^4.1.1"
