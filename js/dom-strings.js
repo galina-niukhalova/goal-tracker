@@ -1,34 +1,38 @@
-export default {
+export const elementStrings = {
+    item: 'item',
+    itemName: 'item__name',
+    itemProgress: 'item__progress',
+    itemStatus: 'item__status--checkbox',
+    itemStatusLabel: 'item__status--label',
+    itemStatusCompleted: 'item--completed',
+    stateGoalActive: 'item-goal--active',
+    btnUpActive: 'btn-up--active',
+
+    btnMoreOptions: 'more-options__btn',
+    contextMenu: 'more-options__menu',
+    contextMenuList: 'menu',
+    contextMenuItem: 'menu__item',
+    btnDeleteItem: 'menu__delete',
+    btnEditItem: 'menu__edit',
+};
+
+export const elements = {
     // ----ITEM properties----
-    itemProgress: '.item__progress',
-    itemComment: '.comment',
-    itemContextMenu: '.more-options__menu',
+    itemProgress: document.querySelector(`.${elementStrings.itemProgress}`),
+    itemComment: document.querySelector('.comment'),
+    itemContextMenu: document.querySelector(`.${elementStrings.contextMenu}`),
 
     // goals
-    btnAdd: '.item-add__btn',
-    btnAddItem: type => `.${type}-add__btn`,
-    stateGoalActive: '.item-goal--active',
-    inputNewItemName: type => `.${type}-add__input`,
-    itemsList: type => `.${type}-list`,
+    btnAdd: document.querySelector('.item-add__btn'),
+    btnAddItem: type => document.querySelector(`.${type}-add__btn`),
+    inputNewItemName: type => document.querySelector(`.${type}-add__input`),
+    itemsList: type => document.querySelector(`.${type}-list`),
     
     // header
-    headerName: '.item-active__name',
-    headerProgress: '.item-active__progress',
+    headerName: document.querySelector('.item-active__name'),
+    headerProgress: document.querySelector('.item-active__progress'),
 
-    btnUp: '.btn-up',
-    _btnUpActive: 'btn-up--active',
-
-    //----Names of classes----
-    // item
-    _itemName: 'item__name',
-    _itemStatusCompleted: 'item--completed',
-    _itemProgress: 'item__progress',
-    _itemStatus: 'item__status--checkbox',
-    _stateGoalActive: 'item-goal--active',
-
-    // context menu
-    _btnMoreOptions: 'more-options__btn',
-    _contextMenuStatusOpen: 'menu--active',
-    _btnDeleteItem: 'menu__delete',
-    _btnEditItem: 'menu__edit'
+    btnUp: document.querySelector('.btn-up')
 };
+
+

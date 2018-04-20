@@ -168,7 +168,6 @@ body {
   position: absolute;
   right: 0;
   bottom: 0;
-  display: none;
   z-index: 100;
   transform: translateY(100%); }
 
@@ -181,9 +180,6 @@ body {
       margin-right: 1rem; }
     .menu__item:hover {
       background-color: #e5e5e5; }
-
-.menu--active {
-  display: block; }
 
 .goal-add {
   grid-column: 1 / span 1;

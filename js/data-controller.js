@@ -62,11 +62,12 @@ const findItemByID = (id, parent = null) => {
     for (let itemPosition in itemList) {
         let item = itemList[itemPosition];
 
-        if (item.id === id) return { item, parent, itemPosition };
+        if (item.id === id) 
+            return { item, parent, itemPosition };
 
         if (item.subItems.length) {
             let target = findItemByID(id, item);
-            if (target) return target;
+            if (target.item) return target;
         }
     };
 

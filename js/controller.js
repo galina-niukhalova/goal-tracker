@@ -1,5 +1,6 @@
 import * as DataController from './data-controller';
 import * as UIController from './UI-controller';
+import { elements, elementStrings } from './dom-strings';
 
 
 const ctrAddItem = (type) => {
@@ -55,42 +56,39 @@ const ctrInit = () => {
 
 // ----- LISTENERS ----- //
 (function () {
-    const DOM = UIController.getDOMStrings();
-
     // ---- Press ENTER ----
     document.addEventListener('keypress', event => {
         if (event.keyCode === 13 || event.which === 13) {
             ctrAddItem('goal');
             ctrAddItem('subgoal');
 
-            if(event.target.className.includes(DOM._itemName)) ctrSaveItem(event.target.parentNode);
+            if(event.target.className.includes(elementStrings.itemName)) ctrSaveItem(event.target.parentNode);
         }
-        // console.log(DataController.test());
     });
 
     const setListeners = type => {
         // ---- Click on btn <Add new ...>  ----
-        document.querySelector(DOM.btnAddItem(type))
+        elements.btnAddItem(type)
             .addEventListener('click', ctrAddItem.bind(null, type));
 
 
-        document.querySelector(DOM.itemsList(type)).addEventListener('click', ({ target }) => {
+        elements.itemsList(type).addEventListener('click', ({ target }) => {
             const { className, parentNode: parent } = target;
 
             // ---- Click on <another item>  ----
-            if (className.includes(DOM._itemName))
+            if (className.includes(elementStrings.itemName))
                 ctrClickOn(type, parent);
 
             // CONTEXT MENU
-            if (className.includes(DOM._btnMoreOptions))
-                ctrTaggleContextMenu(parent);
+            if (className.includes(elementStrings.btnMoreOptions))
+                ctrToggleContextMenu(parent);
 
             // EDIT item
-            if (className.includes(DOM._btnEditItem))
+            if (className.includes(elementStrings.btnEditItem))
                 ctrEditItem(parent.parentNode.parentNode);
 
             // DELETE item
-            if (className.includes(DOM._btnDeleteItem))
+            if (className.includes(elementStrings.btnDeleteItem))
                 ctrDeleteItem(parent.parentNode.parentNode, type);
 
             // COMPLETE ITEM
@@ -101,11 +99,11 @@ const ctrInit = () => {
     };
 
     // COMMENT
-    document.querySelector(DOM.itemComment).addEventListener('change', ({ target }) => {
+    elements.itemComment.addEventListener('change', ({ target }) => {
         ctrUpdateComment(target.value);
     });
 
-    document.querySelector(DOM.btnUp).addEventListener('click', ctrGoUp);
+    elements.btnUp.addEventListener('click', ctrGoUp);
 
     setListeners('goal');
     setListeners('subgoal');
@@ -166,7 +164,7 @@ const ctrDeleteItem = (item, type) => {
 
 const ctrEditItem = (item) => {
     UIController.activeChangeName(item, true);
-    UIController.toggleContextMenu(item);
+    UIController.closeContextMenu(item);
 };
 
 const ctrSaveItem = (itemDOM) => {
@@ -238,7 +236,7 @@ const ctrUpdateComment = (comment) => {
     DataController.setComment(DataController.getActiveItem(), comment);
 };
 
-const ctrTaggleContextMenu = (item) => {
+const ctrToggleContextMenu = (item) => {
     UIController.toggleContextMenu(item);
 };
 
