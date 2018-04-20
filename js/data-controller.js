@@ -75,10 +75,12 @@ const findItemByID = (id, parent = null) => {
 }
 
 const findSiblingItem = function (id) {
-    const { parent, itemPosition } = findItemByID(id);
-    let parentSubs = findItemSubs(parent);
+    const item = findItemByID(id);
+    const itemPosition = parseInt(item.itemPosition); 
 
-    if (parentSubs && parentSubs.length > 1)
+    let parentSubs = findItemSubs(item.parent);
+
+    if (parentSubs && parentSubs.length > 1) 
         return parentSubs[itemPosition + 1] || parentSubs[itemPosition - 1];
 
     return null;

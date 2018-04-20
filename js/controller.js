@@ -73,27 +73,30 @@ const ctrInit = () => {
 
 
         elements.itemsList(type).addEventListener('click', ({ target }) => {
-            const { className, parentNode: parent } = target;
+            const { className } = target;
+            const item = target.closest(`.${elementStrings.item}`);
 
             // ---- Click on <another item>  ----
             if (className.includes(elementStrings.itemName))
-                ctrClickOn(type, parent);
+                ctrClickOn(item, type);
 
             // CONTEXT MENU
-            if (className.includes(elementStrings.btnMoreOptions))
-                ctrToggleContextMenu(parent);
+            const btnMoreOptions = target.closest(`.${elementStrings.btnMoreOptions}`);
+            if (btnMoreOptions)
+                ctrToggleContextMenu(item);
 
             // EDIT item
             if (className.includes(elementStrings.btnEditItem))
-                ctrEditItem(parent.parentNode.parentNode);
+                ctrEditItem(item);
 
             // DELETE item
             if (className.includes(elementStrings.btnDeleteItem))
-                ctrDeleteItem(parent.parentNode.parentNode, type);
+                ctrDeleteItem(item, type);
 
             // COMPLETE ITEM
-            if (target.type === 'checkbox')
-                ctrCompleteItem(target.parentNode, type);
+            const checkboxStatus = target.closest(`.${elementStrings.itemStatus}`);
+            if (checkboxStatus)
+                ctrCompleteItem(item, type);
         });
 
     };
@@ -125,7 +128,7 @@ const ctrSetActiveGoal = id => {
     UIController.changeActiveGoal(id);
 };
 
-const ctrClickOn = (block, itemDOM) => {
+const ctrClickOn = (itemDOM, block) => {
     const ID = parseInt(itemDOM.id);
     const item = DataController.getItemByID(ID);
 
@@ -228,7 +231,8 @@ const ctrUpdateParents = id => {
 
     // UPDATE HEADER
     const activeItem = DataController.getItemByID(DataController.getActiveItem());
-    UIController.updateHeader(activeItem.name, activeItem.progress);
+    let breadCrumbs = DataController.getBreadCrumbs(activeItem.id);
+    UIController.updateHeader(breadCrumbs, activeItem.progress);
 
 }
 
