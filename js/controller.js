@@ -63,6 +63,11 @@ const ctrAddItem = type => {
  *  Delete ITEM
  */
 const ctrDeleteItem = (item, type) => {
+    if(!confirm("Are you sure you want to delete this item?")) {
+        UIController.closeContextMenu();
+        return;
+    }
+
     const parent = DataController.getItemParent(item.id);
 
     switch (type) {
@@ -82,12 +87,11 @@ const ctrDeleteItem = (item, type) => {
     UIController.deleteItem(item.id);
 
     if (parent) {
-        DataController.calcItemProgress(parent.id);
-        DataController.calcItemStatus(parent.id);
+        parent.calcProgress();
+        parent.calcStatus();
 
         updateParents(parent.id);
     }
-
 };
 
 /**
@@ -115,29 +119,41 @@ const ctrEditItemComplete = itemDOM => {
  *  Complete ITEM
  */
 const ctrCompleteItem = item => {
-    const id = parseInt(item.id);
+    item = DataController.getItemByID(item.id);
+
+    if (item.subItems.length > 0) {
+        if (!confirm('Item contains subitems. Are you sure you want to complete this item?')) {
+            return;
+        }
+    }
 
     // Data: update status, progress
-    DataController.completeItem(id);
-    DataController.calcItemProgress(id);
+    item.complete();
+    item.calcProgress();
 
     // UI: update progress
-    UIController.updateItemProgress(DataController.getItemByID(id));
-    UIController.completeItem(id);
+    UIController.updateItemProgress(item);
+    UIController.completeItem(item.id);
 
-    updateParents(id);
+    updateParents(item.id);
+
+    // complete all children
+    updateSubs(item.id);
 };
 
 /**
  *  Uncomplete ITEM
  */
 const ctrUncompleteItem = item => {
-    if(DataController.getItemByID(item.id).subItems.length > 0) {
+    item = DataController.getItemByID(item.id);
+
+    if (DataController.getItemByID(item.id).subItems.length > 0) {
         alert("You can't uncomplete item, because of subitems");
     }
-    else {    
-        DataController.uncompleteItem(item.id);
-        DataController.calcItemProgress(item.id);
+    else {
+        item.uncomplete();
+        item.calcProgress();
+
         UIController.uncompleteItem(item.id);
 
         updateParents(item.id);
@@ -245,6 +261,15 @@ const updateParents = id => {
     updateDescriptionHeader();
 };
 
+const updateSubs = id => {
+    DataController.completeSubs(id);
+
+    DataController.getItemByID(DataController.getActiveItem()).subItems.forEach(sub => {
+        UIController.updateItemProgress(sub);
+        if (sub.status) UIController.completeItem(sub.id);
+    });
+};
+
 /**
  *  Listeners
  */
@@ -287,7 +312,7 @@ const updateParents = id => {
             if (checkboxStatus) ctrCompleteItem(item);
 
             // UNCOMPLETE ITEM
-            if(className.includes(elementStrings.ctxMenuBtnUncomplete)) ctrUncompleteItem(item);
+            if (className.includes(elementStrings.ctxMenuBtnUncomplete)) ctrUncompleteItem(item);
         });
     });
 

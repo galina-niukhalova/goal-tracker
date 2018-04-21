@@ -121,38 +121,33 @@ const deleteItem = id => {
     findItemSubs(parent).splice(itemPosition, 1);
 };
 
-const completeItem = id => {
-    findItemByID(id).item.complete();
-};
-
-const uncompleteItem = id => {
-    findItemByID(id).item.uncomplete();
-}
-
-const calcItemProgress = id => {
-    findItemByID(id).item.calcProgress();
-};
-
-const calcItemStatus = id => {
-    findItemByID(id).item.calcStatus();
-};
-
 const calcParentsProgress = id => {
     let parent = getItemParent(id);
 
     if (parent) {
-        calcItemProgress(parent.id);
-        calcItemStatus(parent.id);
+        parent.calcProgress();
+        parent.calcStatus()
         calcParentsProgress(parent.id);
     }
 };
+
+const completeSubs = id => {
+    const subs = getItemByID(id).subItems;
+
+    subs.forEach(sub => {
+        sub.complete();
+        sub.calcProgress();    
+
+        if(sub.subItems.length != 0) completeSubs(sub.id);
+    });
+}
 
 const getItemByID = id => {
     return findItemByID(parseInt(id)).item;
 };
 
 const getItemParent = id => {
-    return findItemByID(parseInt(id)).parent;
+    return findItemByID(id).parent;
 };
 
 const getActiveItem = id => {
@@ -200,11 +195,8 @@ const getBreadCrumbs = id => {
 export {
     addItem,
     deleteItem,
-    completeItem,
-    uncompleteItem,
-    calcItemProgress,
-    calcItemStatus,
     calcParentsProgress,
+    completeSubs,
     getItemByID,
     getItemParent,
     getActiveItem,
