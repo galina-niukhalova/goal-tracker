@@ -1,38 +1,51 @@
 export const elementStrings = {
+    // Item
     item: 'item',
-    itemName: 'item__name',
-    itemProgress: 'item__progress',
     itemStatus: 'item__status--checkbox',
     itemStatusLabel: 'item__status--label',
-    itemStatusCompleted: 'item--completed',
-    stateGoalActive: 'item-goal--active',
-    btnUpActive: 'btn-up--active',
+    itemName: 'item__name',
+    itemProgress: 'item__progress',
+    itemContextMenu: 'more-options__btn',
 
-    btnMoreOptions: 'more-options__btn',
-    contextMenu: 'more-options__menu',
-    contextMenuList: 'menu',
-    contextMenuItem: 'menu__item',
-    btnDeleteItem: 'menu__delete',
-    btnEditItem: 'menu__edit',
+    // Item description
+    progressBar: 'item-active__progress',
+    breadCrumbs: 'item-active__name',
+    itemComment: 'comment',
+
+    // Context menu
+    ctxMenu: 'more-options__menu',
+    ctxMenuList: 'menu',
+    ctxMenuItem: 'menu__item',
+    ctxMenuBtnDelete: 'menu__delete',
+    ctxMenuBtnEdit: 'menu__edit',
+
+    // Btns
+    btnUp: 'btn-up', 
+
+    // States
+    itemCompleted: 'item--completed',
+    goalActived: 'item-goal--active',
+    btnUpActived: 'btn-up--active'
 };
 
+
 export const elements = {
-    // ----ITEM properties----
-    itemProgress: document.querySelector(`.${elementStrings.itemProgress}`),
-    itemComment: document.querySelector('.comment'),
-    itemContextMenu: document.querySelector(`.${elementStrings.contextMenu}`),
-
-    // goals
-    btnAdd: document.querySelector('.item-add__btn'),
+    // New item
+    inputItemName: type => document.querySelector(`.${type}-add__input`),
     btnAddItem: type => document.querySelector(`.${type}-add__btn`),
-    inputNewItemName: type => document.querySelector(`.${type}-add__input`),
-    itemsList: type => document.querySelector(`.${type}-list`),
-    
-    // header
-    headerName: document.querySelector('.item-active__name'),
-    headerProgress: document.querySelector('.item-active__progress'),
 
-    btnUp: document.querySelector('.btn-up')
+    // Item
+    itemProgress: document.querySelector(`.${elementStrings.itemProgress}`),
+    itemContextMenu: document.querySelector(`.${elementStrings.ctxMenu}`),
+
+    // Item description
+    breadCrumbs: document.querySelector(`.${elementStrings.breadCrumbs}`),
+    progressBar: document.querySelector(`.${elementStrings.progressBar}`),
+    itemComment: document.querySelector(`.${elementStrings.itemComment}`),
+
+    itemsList: type => document.querySelector(`.${type}-list`),
+
+    btnUp: document.querySelector(`.${elementStrings.btnUp}`)
 };
 
 

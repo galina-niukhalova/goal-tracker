@@ -1,18 +1,21 @@
 import { elements, elementStrings } from './dom-strings';
 import { renderItem, renderContextMenu } from './html-templetes';
 
-const getNewItemName = (type) => {
-    return elements.inputNewItemName(type).value;
+/**
+ *  Inputs: add new goal, add new subgoal
+ */
+const readInput = (type) => {
+    return elements.inputItemName(type).value;
+};
+
+const clearInputs = () => {
+    elements.inputItemName('goal').value = '';
+    elements.inputItemName('subgoal').value = '';
 };
 
 const getItemName = (id) => {
     return Array.from(document.getElementById(id).childNodes)
         .find(el => el.className === elementStrings.itemName).value;
-}
-
-const clearFields = () => {
-    elements.inputNewItemName('goal').value = '';
-    elements.inputNewItemName('subgoal').value = '';
 };
 
 const addNewItem = (id, name, type) => {
@@ -48,12 +51,12 @@ const updateItemStatus = (id, status) => {
 }
 
 const completeItem = (id) => {
-    document.getElementById(id).classList.add(elementStrings.itemStatusCompleted);
+    document.getElementById(id).classList.add(elementStrings.itemCompleted);
 };
 
 const updateHeader = (name, progress = 0) => {
-    elements.headerName.textContent = name;
-    elements.headerProgress.value = progress;
+    elements.breadCrumbs.textContent = name;
+    elements.progressBar.value = progress;
 };
 
 const updateSubgoalsList = (list = []) => {
@@ -66,38 +69,38 @@ const updateComment = (comment = '') => {
 };
 
 const changeActiveGoal = (id) => {
-    const previousItem = document.querySelector(`.${elementStrings.stateGoalActive}`);
+    const previousItem = document.querySelector(`.${elementStrings.goalActived}`);
 
     if (previousItem) {
         previousItem
             .classList
-            .remove(elementStrings.stateGoalActive);
+            .remove(elementStrings.goalActived);
     }
 
-    document.getElementById(id).classList.add(elementStrings.stateGoalActive);
+    document.getElementById(id).classList.add(elementStrings.goalActived);
 };
 
 const toggleContextMenu = (item) => {
-    if(item.querySelector(`.${elementStrings.contextMenu}`)) closeContextMenu();
+    if(item.querySelector(`.${elementStrings.ctxMenu}`)) closeContextMenu();
     else renderContextMenu(item);
 };
 
 const closeContextMenu = () => {
-    const contextMenu = document.querySelector(`.${elementStrings.contextMenu}`);
+    const contextMenu = document.querySelector(`.${elementStrings.ctxMenu}`);
     contextMenu.parentNode.removeChild(contextMenu);
-}
+};
 
 const showUpButton = () => {
-    elements.btnUp.classList.add(elementStrings.btnUpActive);
-}
+    elements.btnUp.classList.add(elementStrings.btnUpActived);
+};
 
 const hideUpButton = () => {
-    elements.btnUp.classList.remove(elementStrings.btnUpActive);
-}
+    elements.btnUp.classList.remove(elementStrings.btnUpActived);
+};
 
-const activeAddSubgoal = (isActive) => {
-    elements.inputNewItemName('subgoal').readOnly = !isActive;
-}
+const activeAddSubgoalBlock = (isActive) => {
+    elements.inputItemName('subgoal').readOnly = !isActive;
+};
 
 const activeChangeName = (item, isActive) => {
 
@@ -107,13 +110,13 @@ const activeChangeName = (item, isActive) => {
     itemName.readOnly = !isActive;
 
     if (isActive) itemName.focus();
-}
+};
 
 
 export {
-    getNewItemName,
+    readInput,
     getItemName,
-    clearFields,
+    clearInputs,
     addNewItem,
     deleteItem,
     updateItemProgress,
@@ -127,6 +130,6 @@ export {
     closeContextMenu,
     showUpButton,
     hideUpButton,
-    activeAddSubgoal,
+    activeAddSubgoalBlock,
     activeChangeName
 }

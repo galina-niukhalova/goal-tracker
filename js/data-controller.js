@@ -36,23 +36,23 @@ class Item {
         if (this.progress === 100)
             this.status = true;
     }
-}
+};
 
 let items, activeItem, activeGoal;
 
-const setDefaultSettings = () => {
+const initData = () => {
     items = [];
     activeItem = null;
     activeGoal = null;
-}
+};
 
 const getItems = () => {
     return items;
-}
+};
 
 const findItemSubs = parent => {
     return parent ? parent.subItems : items;
-}
+};
 
 const findItemByID = (id, parent = null) => {
     let itemList, item;
@@ -72,7 +72,7 @@ const findItemByID = (id, parent = null) => {
     };
 
     return {item: null, parent: null, itemPosition: null};;
-}
+};
 
 const findSiblingItem = function (id) {
     const item = findItemByID(id);
@@ -84,7 +84,7 @@ const findSiblingItem = function (id) {
         return parentSubs[itemPosition + 1] || parentSubs[itemPosition - 1];
 
     return null;
-}
+};
 
 const renderID = function () {
     if (!items.length) return 1;
@@ -101,7 +101,7 @@ const renderID = function () {
     findMaxID(items);
 
     return maxId + 1;
-}
+};
 
 const addItem = (name, parent) => {
     const ID = renderID();
@@ -137,7 +137,7 @@ const calcItemProgress = (id) => {
 
 const calcItemStatus = (id) => {
     findItemByID(id).item.calcStatus();
-}
+};
 
 const getItemByID = (id) => {
     return findItemByID(id).item;
@@ -158,7 +158,7 @@ const getAllItemParents = (id) => {
         id = parent;
     }
     return parents;
-}
+};
 
 const getActiveItem = (id) => {
     return activeItem;
@@ -166,7 +166,7 @@ const getActiveItem = (id) => {
 
 const getActiveGoal = () => {
     return activeGoal;
-}
+};
 
 const getNextItem = (id) => {
     return findSiblingItem(id);
@@ -200,7 +200,7 @@ const getBreadCrumbs = (id) => {
         count--;
     }
     return name;
-}
+};
 
 export {
     addItem,
@@ -217,9 +217,8 @@ export {
     setComment,
     setActiveItem,
     setActiveGoal,
-    // change it
-    getBreadCrumbs, 
-    setDefaultSettings,
+    getBreadCrumbs, //TODO 
+    initData,
     getItems
 }
 
