@@ -18,6 +18,7 @@ export const elementStrings = {
     ctxMenuItem: 'menu__item',
     ctxMenuBtnDelete: 'menu__delete',
     ctxMenuBtnEdit: 'menu__edit',
+    ctxMenuBtnUncomplete: 'menu__uncomplete',
 
     // Btns
     btnUp: 'btn-up', 

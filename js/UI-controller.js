@@ -61,6 +61,14 @@ const completeItem = id => {
     updateItemProgress({id, progress:100});
 };
 
+const uncompleteItem = ( id, progress=0 ) => {
+    const item = document.getElementById(id);
+    if(item) item.classList.remove(elementStrings.itemCompleted);
+
+    updateItemStatus(id, false);
+    updateItemProgress({id, progress});
+};
+
 const updateHeader = (name, progress = 0) => {
     elements.breadCrumbs.textContent = name;
     elements.progressBar.value = progress;
@@ -87,8 +95,8 @@ const changeActiveGoal = (id) => {
     document.getElementById(id).classList.add(elementStrings.goalActived);
 };
 
-const toggleContextMenu = (item) => {
-    if(item.querySelector(`.${elementStrings.ctxMenu}`)) closeContextMenu();
+const toggleContextMenu = item => {
+    if(document.getElementById(item.id).querySelector(`.${elementStrings.ctxMenu}`)) closeContextMenu();
     else renderContextMenu(item);
 };
 
@@ -128,6 +136,7 @@ export {
     deleteItem,
     updateItemProgress,
     completeItem,
+    uncompleteItem,
     updateHeader,
     updateSubgoalsList,
     updateComment,

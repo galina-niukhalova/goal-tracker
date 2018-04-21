@@ -23,12 +23,12 @@ const ctrInit = () => {
 const setDefaultDescriptionProps = () => {
     UIController.activeAddSubgoalBlock(true);
     UIController.hideUpButton();
-}
+};
 
 /**
  *  Add a new ITEM
  */
-const ctrAddItem = (type) => {
+const ctrAddItem = type => {
     let item;
     const name = UIController.readInput(type);
 
@@ -63,12 +63,11 @@ const ctrAddItem = (type) => {
  *  Delete ITEM
  */
 const ctrDeleteItem = (item, type) => {
-    const ID = parseInt(item.id);
-    const parent = DataController.getItemParent(ID);
+    const parent = DataController.getItemParent(item.id);
 
     switch (type) {
         case 'goal':
-            const activeItem = DataController.getNextItem(ID);
+            const activeItem = DataController.getNextItem(item.id);
             if (activeItem) {
                 setActiveItem(activeItem);
                 setActiveGoal(activeItem.id);
@@ -79,8 +78,8 @@ const ctrDeleteItem = (item, type) => {
             break;
     }
 
-    DataController.deleteItem(ID);
-    UIController.deleteItem(ID);
+    DataController.deleteItem(item.id);
+    UIController.deleteItem(item.id);
 
     if (parent) {
         DataController.calcItemProgress(parent.id);
@@ -94,12 +93,12 @@ const ctrDeleteItem = (item, type) => {
 /**
  *  Edit ITEM
  */
-const ctrEditItem = (item) => {
+const ctrEditItem = item => {
     UIController.activeChangeName(item, true);
     UIController.closeContextMenu(item);
 };
 
-const ctrEditItemComplete = (itemDOM) => {
+const ctrEditItemComplete = itemDOM => {
     const ID = parseInt(itemDOM.id);
 
     const name = UIController.getItemName(ID);
@@ -110,13 +109,13 @@ const ctrEditItemComplete = (itemDOM) => {
 
     if (ID === DataController.getActiveItem())
         UIController.updateHeader(name, item.progress)
-}
+};
 
 /**
  *  Complete ITEM
  */
-const ctrCompleteItem = (item) => {
-    let id = parseInt(item.id);
+const ctrCompleteItem = item => {
+    const id = parseInt(item.id);
 
     // Data: update status, progress
     DataController.completeItem(id);
@@ -130,9 +129,27 @@ const ctrCompleteItem = (item) => {
 };
 
 /**
+ *  Uncomplete ITEM
+ */
+const ctrUncompleteItem = item => {
+    if(DataController.getItemByID(item.id).subItems.length > 0) {
+        alert("You can't uncomplete item, because of subitems");
+    }
+    else {    
+        DataController.uncompleteItem(item.id);
+        DataController.calcItemProgress(item.id);
+        UIController.uncompleteItem(item.id);
+
+        updateParents(item.id);
+    }
+
+    UIController.closeContextMenu();
+};
+
+/**
  *  Add a COMMENT
  */
-const ctrUpdateComment = (comment) => {
+const ctrUpdateComment = comment => {
     DataController.setComment(DataController.getActiveItem(), comment);
 };
 
@@ -140,8 +157,8 @@ const ctrUpdateComment = (comment) => {
 /**
  *  Open or Close a CONTEXT MENU
  */
-const ctrToggleContextMenu = (item) => {
-    UIController.toggleContextMenu(item);
+const ctrToggleContextMenu = item => {
+    UIController.toggleContextMenu(DataController.getItemByID(item.id));
 };
 
 
@@ -161,12 +178,11 @@ const ctrGoUp = () => {
  *  View item description
  */
 const ctrClickOn = (item, block) => {
-    const ID = parseInt(item.id);
-    item = DataController.getItemByID(ID);
+    item = DataController.getItemByID(item.id);
 
     switch (block) {
         case 'goal':
-            setActiveGoal(ID);
+            setActiveGoal(item.id);
             UIController.hideUpButton();
             break;
         case 'subgoal':
@@ -186,7 +202,7 @@ const updateDescriptionHeader = () => {
     const progress = item.progress;
 
     UIController.updateHeader(name, progress);
-}
+};
 
 /**
  *  Update Description
@@ -195,7 +211,7 @@ const updateDescription = ({ subItems, comment }) => {
     updateDescriptionHeader();
     UIController.updateSubgoalsList(subItems);
     UIController.updateComment(comment);
-}
+};
 
 /**
  *  Change states
@@ -208,7 +224,7 @@ const setActiveGoal = id => {
 const setActiveItem = item => {
     DataController.setActiveItem(item.id);
     updateDescription(item);
-}
+};
 
 const updateParents = id => {
     const activeGoal = DataController.getItemByID(DataController.getActiveGoal());
@@ -217,12 +233,17 @@ const updateParents = id => {
     DataController.calcParentsProgress(id);
 
     // Update Active Goal UI
-    if (activeGoal.status) UIController.completeItem(activeGoal.id);
-    else UIController.updateItemProgress(activeGoal)
+    if (activeGoal.status) {
+        UIController.completeItem(activeGoal.id);
+    }
+    else {
+        UIController.updateItemProgress(activeGoal);
+        UIController.uncompleteItem(activeGoal.id, activeGoal.progress);
+    }
 
     // Update Header
     updateDescriptionHeader();
-}
+};
 
 /**
  *  Listeners
@@ -264,6 +285,9 @@ const updateParents = id => {
             // COMPLETE ITEM
             const checkboxStatus = target.closest(`.${elementStrings.itemStatus}`);
             if (checkboxStatus) ctrCompleteItem(item);
+
+            // UNCOMPLETE ITEM
+            if(className.includes(elementStrings.ctxMenuBtnUncomplete)) ctrUncompleteItem(item);
         });
     });
 

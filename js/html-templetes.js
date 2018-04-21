@@ -23,7 +23,16 @@ export const renderItem = ({ id, name, progress, status }, parent) => {
     parent.insertAdjacentHTML('beforeend', newItem);
 };
 
-export const renderContextMenu = (item) => {
+const contextMenuUncomplete = item => {
+    if(item.status) return (
+        `<li class="${elementStrings.ctxMenuItem} ${elementStrings.ctxMenuBtnUncomplete}">
+            <i class="icon ion-ios-circle-outline"></i>Uncomplete
+        </li>` );
+
+    return ``;
+};
+
+export const renderContextMenu = item => {
     const markup = `
         <div class="${elementStrings.ctxMenu}">
             <ul class="${elementStrings.ctxMenuList}">
@@ -33,8 +42,9 @@ export const renderContextMenu = (item) => {
                 <li class="${elementStrings.ctxMenuItem}  ${elementStrings.ctxMenuBtnDelete}">
                     <i class="icon ion-trash-b"></i>Delete
                 </li>
+                ${contextMenuUncomplete(item)}
             </ul>
         </div>`
 
-    item.insertAdjacentHTML('beforeend', markup);
+    document.getElementById(item.id).insertAdjacentHTML('beforeend', markup);
 };

@@ -14,27 +14,25 @@ class Item {
         this.status = true;
     }
 
+    uncomplete() {
+        this.status = false;
+    }
+
     calcProgress() {
-        if (this.status) {
-            this.progress = 100;
+        const totalSubs = this.subItems.length;
+
+        if (!totalSubs) {
+            this.status ? this.progress = 100 : this.progress = 0;
         }
         else {
-            const totalSubs = this.subItems.length;
+            let completedSubs = this.subItems.filter(el => el.status).length;
 
-            if (!totalSubs) {
-                this.progress = 0;
-            }
-            else {
-                let completedSubs = this.subItems.filter(el => el.status).length;
-
-                this.progress = Math.floor((completedSubs / totalSubs) * 100);
-            }
+            this.progress = Math.floor((completedSubs / totalSubs) * 100);
         }
     }
 
     calcStatus() {
-        if (this.progress === 100)
-            this.status = true;
+        this.progress === 100 ? this.status = true : this.status = false;
     }
 };
 
@@ -51,14 +49,15 @@ const findItemSubs = parent => {
 };
 
 const findItemByID = (id, parent = null) => {
+    id = parseInt(id);
     let itemList, item;
-    
+
     itemList = findItemSubs(parent);
 
     for (let itemPosition in itemList) {
         let item = itemList[itemPosition];
 
-        if (item.id === id) 
+        if (item.id === id)
             return { item, parent, itemPosition };
 
         if (item.subItems.length) {
@@ -67,16 +66,16 @@ const findItemByID = (id, parent = null) => {
         }
     };
 
-    return {item: null, parent: null, itemPosition: null};;
+    return { item: null, parent: null, itemPosition: null };;
 };
 
 const findSiblingItem = function (id) {
     const item = findItemByID(id);
-    const itemPosition = parseInt(item.itemPosition); 
+    const itemPosition = parseInt(item.itemPosition);
 
     let parentSubs = findItemSubs(item.parent);
 
-    if (parentSubs && parentSubs.length > 1) 
+    if (parentSubs && parentSubs.length > 1)
         return parentSubs[itemPosition + 1] || parentSubs[itemPosition - 1];
 
     return null;
@@ -119,13 +118,16 @@ const addItem = (name, parent) => {
 const deleteItem = id => {
     let { parent, itemPosition } = findItemByID(id);
 
-   
     findItemSubs(parent).splice(itemPosition, 1);
 };
 
 const completeItem = id => {
     findItemByID(id).item.complete();
 };
+
+const uncompleteItem = id => {
+    findItemByID(id).item.uncomplete();
+}
 
 const calcItemProgress = id => {
     findItemByID(id).item.calcProgress();
@@ -137,8 +139,8 @@ const calcItemStatus = id => {
 
 const calcParentsProgress = id => {
     let parent = getItemParent(id);
-    
-    if(parent) {
+
+    if (parent) {
         calcItemProgress(parent.id);
         calcItemStatus(parent.id);
         calcParentsProgress(parent.id);
@@ -146,11 +148,11 @@ const calcParentsProgress = id => {
 };
 
 const getItemByID = id => {
-    return findItemByID(id).item;
+    return findItemByID(parseInt(id)).item;
 };
 
 const getItemParent = id => {
-    return findItemByID(id).parent;
+    return findItemByID(parseInt(id)).parent;
 };
 
 const getActiveItem = id => {
@@ -178,7 +180,6 @@ const setActiveGoal = id => {
 };
 
 const getBreadCrumbs = id => {
-    window.items = items;
     let itemParam = findItemByID(id);
 
     let parent = itemParam.parent;
@@ -200,6 +201,7 @@ export {
     addItem,
     deleteItem,
     completeItem,
+    uncompleteItem,
     calcItemProgress,
     calcItemStatus,
     calcParentsProgress,
@@ -211,7 +213,7 @@ export {
     setComment,
     setActiveItem,
     setActiveGoal,
-    getBreadCrumbs, 
+    getBreadCrumbs,
     initData
 }
 
