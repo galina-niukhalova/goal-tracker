@@ -20,7 +20,7 @@ const ctrInit = () => {
  *  Add new subItem: active
  *  BtnUp: hide
  */
-const setDefaultItemDescriptionSettings = () => {
+const setDefaultDescriptionProps = () => {
     UIController.activeAddSubgoalBlock(true);
     UIController.hideUpButton();
 }
@@ -34,30 +34,22 @@ const ctrAddItem = (type) => {
 
     if (name) {
 
+        // Data controller: add item 
+        type === 'goal' ? item = DataController.addItem(name)
+            : item = DataController.addItem(name, DataController.getActiveItem());
+
+        // UI controller: add item
+        UIController.addNewItem(item.id, name, type);
+
         switch (type) {
             case 'goal':
-                // Data controller: add item 
-                item = DataController.addItem(name);
-
-                // UI controller: add item
-                UIController.addNewItem(item.id, name, type);
-
                 // Set item states
-                DataController.setActiveItem(item.id);
+                setActiveItem(item);
                 setActiveGoal(item.id);
-
-                setDefaultItemDescriptionSettings();
-                updateDescription(item);
+                setDefaultDescriptionProps();
                 break;
 
             case 'subgoal':
-                // Data controller: add item 
-                const parentID = DataController.getActiveItem();
-                item = DataController.addItem(name, parentID);
-
-                // UI controller: add item
-                UIController.addNewItem(item.id, name, type);
-
                 updateParents(item.id);
                 break;
         }
@@ -78,9 +70,8 @@ const ctrDeleteItem = (item, type) => {
         case 'goal':
             const activeItem = DataController.getNextItem(ID);
             if (activeItem) {
-                DataController.setActiveItem(activeItem.id);
+                setActiveItem(activeItem);
                 setActiveGoal(activeItem.id);
-                updateDescription(activeItem);
             }
             else {
                 ctrInit();
@@ -91,7 +82,7 @@ const ctrDeleteItem = (item, type) => {
     DataController.deleteItem(ID);
     UIController.deleteItem(ID);
 
-    if(parent) {
+    if (parent) {
         DataController.calcItemProgress(parent.id);
         DataController.calcItemStatus(parent.id);
 
@@ -135,13 +126,7 @@ const ctrCompleteItem = (item) => {
     UIController.updateItemProgress(DataController.getItemByID(id));
     UIController.completeItem(id);
 
-    const parent = DataController.getItemParent(id);
-    if (parent) {
-        DataController.calcItemProgress(parent.id);
-        if (parent.progress === 100) ctrCompleteItem(parent);
-    }
-
-    updateDescriptionHeader();
+    updateParents(id);
 };
 
 /**
@@ -167,8 +152,7 @@ const ctrGoUp = () => {
     const activeGoal = DataController.getActiveGoal();
     const activeItem = DataController.getItemParent(DataController.getActiveItem());
 
-    DataController.setActiveItem(activeItem.id);
-    updateDescription(activeItem);
+    setActiveItem(activeItem);
 
     if (activeGoal === activeItem.id) UIController.hideUpButton();
 };
@@ -190,8 +174,7 @@ const ctrClickOn = (item, block) => {
             break;
     }
 
-    DataController.setActiveItem(ID);
-    updateDescription(item);
+    setActiveItem(item);
 };
 
 /**
@@ -222,6 +205,11 @@ const setActiveGoal = id => {
     UIController.changeActiveGoal(id);
 };
 
+const setActiveItem = item => {
+    DataController.setActiveItem(item.id);
+    updateDescription(item);
+}
+
 const updateParents = id => {
     const activeGoal = DataController.getItemByID(DataController.getActiveGoal());
 
@@ -229,12 +217,12 @@ const updateParents = id => {
     DataController.calcParentsProgress(id);
 
     // Update Active Goal UI
-    if(activeGoal.status) UIController.completeItem(activeGoal.id);
+    if (activeGoal.status) UIController.completeItem(activeGoal.id);
+    else UIController.updateItemProgress(activeGoal)
 
     // Update Header
     updateDescriptionHeader();
 }
-
 
 /**
  *  Listeners

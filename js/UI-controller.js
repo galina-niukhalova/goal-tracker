@@ -127,7 +127,6 @@ export {
     addNewItem,
     deleteItem,
     updateItemProgress,
-    updateItemStatus,
     completeItem,
     updateHeader,
     updateSubgoalsList,

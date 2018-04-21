@@ -46,10 +46,6 @@ const initData = () => {
     activeGoal = null;
 };
 
-const getItems = () => {
-    return items;
-};
-
 const findItemSubs = parent => {
     return parent ? parent.subItems : items;
 };
@@ -157,19 +153,6 @@ const getItemParent = id => {
     return findItemByID(id).parent;
 };
 
-const getAllItemParents = id => {
-    let parents = [];
-
-    while (id) {
-        parent = getItemParent(id);
-        if (parent)
-            parents.push(parent);
-
-        id = parent;
-    }
-    return parents;
-};
-
 const getActiveItem = id => {
     return activeItem;
 };
@@ -222,16 +205,14 @@ export {
     calcParentsProgress,
     getItemByID,
     getItemParent,
-    getAllItemParents,
     getActiveItem,
     getActiveGoal,
     getNextItem,
     setComment,
     setActiveItem,
     setActiveGoal,
-    getBreadCrumbs, //TODO 
-    initData,
-    getItems
+    getBreadCrumbs, 
+    initData
 }
 
 
