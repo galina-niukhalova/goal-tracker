@@ -120,34 +120,44 @@ const addItem = (name, parent) => {
     return newItem;
 };
 
-const deleteItem = (id) => {
+const deleteItem = id => {
     let { parent, itemPosition } = findItemByID(id);
 
    
     findItemSubs(parent).splice(itemPosition, 1);
 };
 
-const completeItem = (id) => {
+const completeItem = id => {
     findItemByID(id).item.complete();
 };
 
-const calcItemProgress = (id) => {
+const calcItemProgress = id => {
     findItemByID(id).item.calcProgress();
 };
 
-const calcItemStatus = (id) => {
+const calcItemStatus = id => {
     findItemByID(id).item.calcStatus();
 };
 
-const getItemByID = (id) => {
+const calcParentsProgress = id => {
+    let parent = getItemParent(id);
+    
+    if(parent) {
+        calcItemProgress(parent.id);
+        calcItemStatus(parent.id);
+        calcParentsProgress(parent.id);
+    }
+};
+
+const getItemByID = id => {
     return findItemByID(id).item;
 };
 
-const getItemParent = (id) => {
+const getItemParent = id => {
     return findItemByID(id).parent;
 };
 
-const getAllItemParents = (id) => {
+const getAllItemParents = id => {
     let parents = [];
 
     while (id) {
@@ -160,7 +170,7 @@ const getAllItemParents = (id) => {
     return parents;
 };
 
-const getActiveItem = (id) => {
+const getActiveItem = id => {
     return activeItem;
 };
 
@@ -168,7 +178,7 @@ const getActiveGoal = () => {
     return activeGoal;
 };
 
-const getNextItem = (id) => {
+const getNextItem = id => {
     return findSiblingItem(id);
 };
 
@@ -176,15 +186,16 @@ const setComment = (id, comment) => {
     findItemByID(id).item.comment = comment;
 };
 
-const setActiveItem = (id) => {
+const setActiveItem = id => {
     activeItem = id;
 };
 
-const setActiveGoal = (id) => {
+const setActiveGoal = id => {
     activeGoal = id;
 };
 
-const getBreadCrumbs = (id) => {
+const getBreadCrumbs = id => {
+    window.items = items;
     let itemParam = findItemByID(id);
 
     let parent = itemParam.parent;
@@ -208,6 +219,7 @@ export {
     completeItem,
     calcItemProgress,
     calcItemStatus,
+    calcParentsProgress,
     getItemByID,
     getItemParent,
     getAllItemParents,

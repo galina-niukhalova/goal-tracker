@@ -29,10 +29,11 @@ const setDefaultItemDescriptionSettings = () => {
  *  Add a new ITEM
  */
 const ctrAddItem = (type) => {
-    let item, parentID;
+    let item;
     const name = UIController.readInput(type);
 
     if (name) {
+
         switch (type) {
             case 'goal':
                 // Data controller: add item 
@@ -41,21 +42,23 @@ const ctrAddItem = (type) => {
                 // UI controller: add item
                 UIController.addNewItem(item.id, name, type);
 
-                setDefaultItemDescriptionSettings();
-
                 // Set item states
-                changeActiveItem(item);
+                DataController.setActiveItem(item.id);
                 setActiveGoal(item.id);
+
+                setDefaultItemDescriptionSettings();
+                updateDescription(item);
                 break;
 
             case 'subgoal':
-                parentID = DataController.getActiveItem();
+                // Data controller: add item 
+                const parentID = DataController.getActiveItem();
                 item = DataController.addItem(name, parentID);
+
+                // UI controller: add item
                 UIController.addNewItem(item.id, name, type);
 
                 updateParents(item.id);
-                let breadCrumbs = DataController.getBreadCrumbs(parentID);
-                UIController.updateHeader(breadCrumbs, DataController.getItemByID(parentID).progress);
                 break;
         }
 
@@ -69,13 +72,15 @@ const ctrAddItem = (type) => {
  */
 const ctrDeleteItem = (item, type) => {
     const ID = parseInt(item.id);
+    const parent = DataController.getItemParent(ID);
 
     switch (type) {
         case 'goal':
             const activeItem = DataController.getNextItem(ID);
-            if (activeItem != null) {
-                changeActiveItem(activeItem);
+            if (activeItem) {
+                DataController.setActiveItem(activeItem.id);
                 setActiveGoal(activeItem.id);
+                updateDescription(activeItem);
             }
             else {
                 ctrInit();
@@ -85,6 +90,14 @@ const ctrDeleteItem = (item, type) => {
 
     DataController.deleteItem(ID);
     UIController.deleteItem(ID);
+
+    if(parent) {
+        DataController.calcItemProgress(parent.id);
+        DataController.calcItemStatus(parent.id);
+
+        updateParents(parent.id);
+    }
+
 };
 
 /**
@@ -111,33 +124,24 @@ const ctrEditItemComplete = (itemDOM) => {
 /**
  *  Complete ITEM
  */
-const ctrCompleteItem = (item, type) => {
+const ctrCompleteItem = (item) => {
     let id = parseInt(item.id);
 
     // Data: update status, progress
     DataController.completeItem(id);
     DataController.calcItemProgress(id);
 
-
     // UI: update progress
-    const { name, progress } = DataController.getItemByID(id);
-    UIController.updateItemProgress(id, progress);
-
-    //calc Progress of parents, update progress 
-    switch (type) {
-        case 'subgoal':
-            // calc parent progress
-            updateParents(id);
-            break;
-        case 'goal':
-            // update Header
-            if (DataController.getActiveItem() === id)
-                UIController.updateHeader(name, progress);
-            break;
-    };
-
-    // Update item's visible 
+    UIController.updateItemProgress(DataController.getItemByID(id));
     UIController.completeItem(id);
+
+    const parent = DataController.getItemParent(id);
+    if (parent) {
+        DataController.calcItemProgress(parent.id);
+        if (parent.progress === 100) ctrCompleteItem(parent);
+    }
+
+    updateDescriptionHeader();
 };
 
 /**
@@ -160,11 +164,11 @@ const ctrToggleContextMenu = (item) => {
  * Come back to a parent (Go up BTN)
  */
 const ctrGoUp = () => {
-    let activeItem = DataController.getActiveItem();
     const activeGoal = DataController.getActiveGoal();
+    const activeItem = DataController.getItemParent(DataController.getActiveItem());
 
-    activeItem = DataController.getItemParent(activeItem);
-    changeActiveItem(activeItem);
+    DataController.setActiveItem(activeItem.id);
+    updateDescription(activeItem);
 
     if (activeGoal === activeItem.id) UIController.hideUpButton();
 };
@@ -186,54 +190,49 @@ const ctrClickOn = (item, block) => {
             break;
     }
 
-    changeActiveItem(item);
+    DataController.setActiveItem(ID);
+    updateDescription(item);
 };
 
+/**
+ *  Update Description Header
+ */
+const updateDescriptionHeader = () => {
+    const item = DataController.getItemByID(DataController.getActiveItem());
+    const name = DataController.getBreadCrumbs(item.id);
+    const progress = item.progress;
 
+    UIController.updateHeader(name, progress);
+}
+
+/**
+ *  Update Description
+ */
+const updateDescription = ({ subItems, comment }) => {
+    updateDescriptionHeader();
+    UIController.updateSubgoalsList(subItems);
+    UIController.updateComment(comment);
+}
 
 /**
  *  Change states
  */
-const changeActiveItem = ({ id, name, progress, subItems, comment }) => {
-    DataController.setActiveItem(id);
-
-    // update description
-    UIController.updateHeader(DataController.getBreadCrumbs(id), progress);
-    UIController.updateSubgoalsList(subItems);
-    UIController.updateComment(comment);
-};
-
 const setActiveGoal = id => {
     DataController.setActiveGoal(id);
     UIController.changeActiveGoal(id);
 };
 
-
-/**
- * Update parent's progress
- */
 const updateParents = id => {
-    const activeGoal = DataController.getActiveGoal();
-    let parentID = null, parent;
+    const activeGoal = DataController.getItemByID(DataController.getActiveGoal());
 
-    // CALC ALL PARENT'S PROGRESS
-    while (parentID !== activeGoal) {
-        parent = DataController.getItemParent(id);
-        parentID = parent.id;
-        DataController.calcItemProgress(parentID);
-        DataController.calcItemStatus(parentID);
-        id = parentID;
-    }
+    // Calc all parents status
+    DataController.calcParentsProgress(id);
 
-    // UPDATE GOAL
-    UIController.updateItemProgress(parentID, parent.progress);
-    if (parent.progress === 100) UIController.completeItem(parentID);
+    // Update Active Goal UI
+    if(activeGoal.status) UIController.completeItem(activeGoal.id);
 
-    // UPDATE HEADER
-    const activeItem = DataController.getItemByID(DataController.getActiveItem());
-    let breadCrumbs = DataController.getBreadCrumbs(activeItem.id);
-    UIController.updateHeader(breadCrumbs, activeItem.progress);
-
+    // Update Header
+    updateDescriptionHeader();
 }
 
 
@@ -248,7 +247,7 @@ const updateParents = id => {
 
             // Save a new item name
             const item = event.target.closest(`.${elementStrings.item}`);
-            if (item) ctrEditItemComplete(event.target.parentNode);
+            if (item) ctrEditItemComplete(item);
         }
     });
 
@@ -276,7 +275,7 @@ const updateParents = id => {
 
             // COMPLETE ITEM
             const checkboxStatus = target.closest(`.${elementStrings.itemStatus}`);
-            if (checkboxStatus) ctrCompleteItem(item, type);
+            if (checkboxStatus) ctrCompleteItem(item);
         });
     });
 

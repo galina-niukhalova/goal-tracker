@@ -24,16 +24,19 @@ const addNewItem = (id, name, type) => {
 
 const deleteItem = (id) => {
     const item = document.getElementById(id);
-    item.parentNode.removeChild(item);
+    if(item)
+        item.parentNode.removeChild(item);
 };
 
-const updateItemProgress = (id, progress) => {
+const updateItemProgress = ({id, progress}) => {
     if (!progress)
         progress = '---';
     else progress =
         `${progress}%`;
 
-    document.getElementById(id)
+    const item = document.getElementById(id);
+    if(item) 
+        item
         .childNodes
         .forEach(element => {
             if (element.className === elementStrings.itemProgress)
@@ -50,8 +53,12 @@ const updateItemStatus = (id, status) => {
         });
 }
 
-const completeItem = (id) => {
-    document.getElementById(id).classList.add(elementStrings.itemCompleted);
+const completeItem = id => {
+    const item = document.getElementById(id);
+    if(item) item.classList.add(elementStrings.itemCompleted);
+
+    updateItemStatus(id, true);
+    updateItemProgress({id, progress:100});
 };
 
 const updateHeader = (name, progress = 0) => {
