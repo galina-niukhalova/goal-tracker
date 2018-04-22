@@ -136,7 +136,7 @@ const ctrUncompleteItem = item => {
     item = DataController.getItemByID(item.id);
 
     if (DataController.getItemByID(item.id).subItems.length > 0) {
-        alert("You can't uncomplete item, because of subitems");
+        UIController.openAlertWindow('Uncomplete');
     }
     else {
         item.uncomplete();
@@ -280,7 +280,7 @@ const ctrConfirm = (id, action) => {
             break;
     }
 
-    UIController.closeConfirmWindow();
+    UIController.closeModalWindow();
 }
 
 /**
@@ -299,12 +299,12 @@ const ctrConfirm = (id, action) => {
     });
 
     document.addEventListener('click', event => {
-        const bntCancel = event.target.closest(`.${elementStrings.confirmBtnCancel}`);
-        if (bntCancel) UIController.closeConfirmWindow();
+        const bntCancel = event.target.closest(`.${elementStrings.modalBtnCancel}`);
+        if (bntCancel) UIController.closeModalWindow();
 
-        const btnConfirm = event.target.closest(`.${elementStrings.confirmBtn}`);
+        const btnConfirm = event.target.closest(`.${elementStrings.modalBtn}`);
         if (btnConfirm) {
-            const box = event.target.closest(`.${elementStrings.confirmBox}`);
+            const box = event.target.closest(`.${elementStrings.modalBox}`);
             ctrConfirm(box.dataset.item, box.dataset.action);
         }
     });

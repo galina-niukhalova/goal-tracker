@@ -1,4 +1,4 @@
-.confirm-box {
+.modal-box {
     z-index: 300;
     width: 35vw;
     height: 30vh;
@@ -16,7 +16,7 @@
     flex-direction: column;
 }
 
-.confirm {
+.modal {
     &-btn {
         display: inline-block;
         border: 2px solid #dee3e8;

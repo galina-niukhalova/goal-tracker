@@ -29,10 +29,11 @@ export const elementStrings = {
     btnUpActived: 'btn-up--active',
 
     // Modal windows
-    confirmBox: 'confirm-box',
-    confirmBtn: 'confirm-btn',
-    confirmBtnClose: 'confirm-btn--close',
-    confirmBtnCancel: 'confirm-btn--cancel',
+    modalBox: 'modal-box',
+    modalBtn: 'modal-btn',
+    modalBtnClose: 'modal-btn--close',
+    modalBtnCancel: 'modal-btn--cancel',
+    modalBtnOK: 'modal-btn--ok',
     confirmBtnConfirm: 'confirm-btn--confirm'
 };
 

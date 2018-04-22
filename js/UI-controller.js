@@ -1,5 +1,5 @@
 import { elements, elementStrings } from './dom-strings';
-import { renderItem, renderContextMenu, renderConfirmWindow } from './html-templetes';
+import { renderItem, renderContextMenu, renderConfirmWindow, renderAlertWindow } from './html-templetes';
 
 /**
  *  Inputs: add new goal, add new subgoal
@@ -131,8 +131,12 @@ const openConfirmWindow = (itemID, action) => {
     renderConfirmWindow(itemID, action);
 };
 
-const closeConfirmWindow = () => {
-    const box = document.querySelector(`.${elementStrings.confirmBox}`);
+const openAlertWindow = action => {
+    renderAlertWindow('Uncomplete');
+}
+
+const closeModalWindow = () => {
+    const box = document.querySelector(`.${elementStrings.modalBox}`);
 
     box.parentElement.removeChild(box);
 };
@@ -153,7 +157,8 @@ export {
     toggleContextMenu,
     closeContextMenu,
     openConfirmWindow,
-    closeConfirmWindow,
+    openAlertWindow,
+    closeModalWindow,
     showUpButton,
     hideUpButton,
     activeAddSubgoalBlock,

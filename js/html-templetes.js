@@ -1,12 +1,12 @@
 import { elementStrings } from './dom-strings';
 
 export const renderItem = ({ id, name, progress, status }, parent) => {
-    progress ? progress = `${progress}%` 
-             : progress = '---';
+    progress ? progress = `${progress}%`
+        : progress = '---';
 
     let classItem;
-    status ? classItem = `${elementStrings.item} ${elementStrings.itemCompleted}` 
-           : classItem = `${elementStrings.item}`;
+    status ? classItem = `${elementStrings.item} ${elementStrings.itemCompleted}`
+        : classItem = `${elementStrings.item}`;
 
     const newItem = `<div class="${classItem}" id=${id}>
                 <input type="checkbox" class="${elementStrings.itemStatus}" id="status-${id}">
@@ -24,7 +24,7 @@ export const renderItem = ({ id, name, progress, status }, parent) => {
 };
 
 const contextMenuUncomplete = item => {
-    if(item.status) return (
+    if (item.status) return (
         `<li class="${elementStrings.ctxMenuItem} ${elementStrings.ctxMenuBtnUncomplete}">
             <i class="icon ion-ios-circle-outline"></i>Uncomplete
         </li>` );
@@ -53,19 +53,38 @@ export const renderConfirmWindow = (id, action) => {
     const text = {
         "Delete": 'Are you sure you want to delete item?',
         "Complete": 'Are you sure you want to complete item which contains subitems? All subitems will be completed too.'
-    }
+    };
 
     const markup = `
-        <div class="${elementStrings.confirmBox}" data-action="${action}" data-item="${id}">
-            <button class="${elementStrings.confirmBtnClose} ${elementStrings.confirmBtnCancel}">
+        <div class="${elementStrings.modalBox}" data-action="${action}" data-item="${id}">
+            <button class="${elementStrings.modalBtnClose} ${elementStrings.modalBtnCancel}">
                 <i class="icon ion-close"></i>
             </button>
-        <p class="confirm-text">${text[action]}</p>
-        <div class="confirm-btns">
-            <button class="${elementStrings.confirmBtn} ${elementStrings.confirmBtnCancel}">Cancel</button>
-            <button class="${elementStrings.confirmBtn} ${elementStrings.confirmBtnConfirm}">${action}</button>
+        <p class="modal-text">${text[action]}</p>
+        <div class="modal-btns">
+            <button class="${elementStrings.modalBtn} ${elementStrings.modalBtnCancel}">Cancel</button>
+            <button class="${elementStrings.modalBtn} ${elementStrings.confirmBtnConfirm}">${action}</button>
         </div>
     </div>`;
 
     document.body.insertAdjacentHTML('beforeend', markup);
-}
+};
+
+export const renderAlertWindow = action => {
+    const text = {
+        "Uncomplete": "You can't uncomplete item which contains subitems. Please, uncomplete subitems first."
+    };
+
+    const markup = `
+        <div class="modal-box">
+            <button class="${elementStrings.modalBtnClose} ${elementStrings.modalBtnCancel}">
+                <i class="icon ion-close"></i>
+            </button>
+            <p class="modal-text">${text[action]}</p>
+            <div class="modal-btns">
+                <button class="${elementStrings.modalBtn} ${elementStrings.modalBtnOK}">OK</button>
+            </div>
+        </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', markup);
+};
