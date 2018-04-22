@@ -30,11 +30,11 @@ export const elementStrings = {
     btnUpActived: 'btn-up--active',
 
     // Modal windows
+    modalWindow: 'modal-window',
     modalBox: 'modal-box',
     modalBtn: 'modal-btn',
     modalBtnClose: 'modal-btn--close',
     modalBtnCancel: 'modal-btn--cancel',
-    modalBtnOK: 'modal-btn--ok',
     confirmBtnConfirm: 'confirm-btn--confirm'
 };
 

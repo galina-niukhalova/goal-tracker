@@ -30,7 +30,7 @@ const deleteItem = (id) => {
 
 const updateItemProgress = ({ id, progress }) => {
     if (!progress)
-        progress = '---';
+        progress = '0%';
     else progress =
         `${progress}%`;
 
@@ -137,7 +137,7 @@ const openAlertWindow = action => {
 }
 
 const closeModalWindow = () => {
-    const box = document.querySelector(`.${elementStrings.modalBox}`);
+    const box = document.querySelector(`.${elementStrings.modalWindow}`);
 
     box.parentElement.removeChild(box);
 };

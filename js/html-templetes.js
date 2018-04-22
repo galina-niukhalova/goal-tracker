@@ -58,16 +58,17 @@ export const renderConfirmWindow = (id, action) => {
     };
 
     const markup = `
-        <div class="${elementStrings.modalBox}" data-action="${action}" data-item="${id}">
-            <button class="${elementStrings.modalBtnClose} ${elementStrings.modalBtnCancel}">
-                <i class="icon ion-close"></i>
-            </button>
-        <p class="modal-text">${text[action]}</p>
-        <div class="modal-btns">
-            <button class="${elementStrings.modalBtn} ${elementStrings.modalBtnCancel}">Cancel</button>
-            <button class="${elementStrings.modalBtn} ${elementStrings.confirmBtnConfirm}">${action}</button>
-        </div>
-    </div>`;
+        <div class="modal-window">
+            <div class="${elementStrings.modalBox}" data-action="${action}" data-item="${id}">
+                <button class="${elementStrings.modalBtnClose} ${elementStrings.modalBtnCancel}">
+                    <i class="icon ion-close"></i>
+                </button>
+            <p class="modal-text">${text[action]}</p>
+            <div class="modal-btns">
+                <button class="${elementStrings.modalBtn} ${elementStrings.modalBtnCancel}">Cancel</button>
+                <button class="${elementStrings.modalBtn} ${elementStrings.confirmBtnConfirm}">${action}</button>
+            </div>
+        </div>`;
 
     document.body.insertAdjacentHTML('beforeend', markup);
 };
@@ -78,15 +79,17 @@ export const renderAlertWindow = action => {
     };
 
     const markup = `
-        <div class="modal-box">
-            <button class="${elementStrings.modalBtnClose} ${elementStrings.modalBtnCancel}">
-                <i class="icon ion-close"></i>
-            </button>
-            <p class="modal-text">${text[action]}</p>
-            <div class="modal-btns">
-                <button class="${elementStrings.modalBtn} ${elementStrings.modalBtnOK}">OK</button>
+        <div class="modal-window">
+            <div class="modal-box">
+                <button class="${elementStrings.modalBtnClose} ${elementStrings.modalBtnCancel}">
+                    <i class="icon ion-close"></i>
+                </button>
+                <p class="modal-text">${text[action]}</p>
+                <div class="modal-btns">
+                    <button class="${elementStrings.modalBtn} ${elementStrings.modalBtnCancel}">OK</button>
+                </div>
             </div>
-        </div>`;
+        <div>`;
 
     document.body.insertAdjacentHTML('beforeend', markup);
 };

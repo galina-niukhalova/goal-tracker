@@ -299,15 +299,23 @@ body {
   .comment:focus {
     outline: none; }
 
-.modal-box {
+.modal-window {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
   z-index: 300;
+  background-color: rgba(0, 0, 0, 0.5); }
+
+.modal-box {
   width: 35vw;
   height: 30vh;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.25);
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -345,7 +353,7 @@ body {
 .modal-text {
   flex-grow: 1;
   max-width: 80%;
-  margin: 2rem auto;
+  margin: 2rem 4rem;
   font-size: 1.6rem;
   font-weight: 400;
   letter-spacing: .5px; }
