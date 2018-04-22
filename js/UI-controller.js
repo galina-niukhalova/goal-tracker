@@ -1,5 +1,5 @@
 import { elements, elementStrings } from './dom-strings';
-import { renderItem, renderContextMenu } from './html-templetes';
+import { renderItem, renderContextMenu, renderConfirmWindow } from './html-templetes';
 
 /**
  *  Inputs: add new goal, add new subgoal
@@ -127,6 +127,15 @@ const activeChangeName = (item, isActive) => {
     if (isActive) itemName.focus();
 };
 
+const openConfirmWindow = (itemID, action) => {
+    renderConfirmWindow(itemID, action);
+};
+
+const closeConfirmWindow = () => {
+    const box = document.querySelector(`.${elementStrings.confirmBox}`);
+
+    box.parentElement.removeChild(box);
+};
 
 export {
     readInput,
@@ -143,6 +152,8 @@ export {
     changeActiveGoal,
     toggleContextMenu,
     closeContextMenu,
+    openConfirmWindow,
+    closeConfirmWindow,
     showUpButton,
     hideUpButton,
     activeAddSubgoalBlock,

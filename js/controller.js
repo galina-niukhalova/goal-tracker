@@ -62,17 +62,12 @@ const ctrAddItem = type => {
 /**
  *  Delete ITEM
  */
-const ctrDeleteItem = (item, type) => {
-    if(!confirm("Are you sure you want to delete this item?")) {
-        UIController.closeContextMenu();
-        return;
-    }
-
-    const parent = DataController.getItemParent(item.id);
+const ctrDeleteItem = (id, type) => {
+    const parent = DataController.getItemParent(id);
 
     switch (type) {
         case 'goal':
-            const activeItem = DataController.getNextItem(item.id);
+            const activeItem = DataController.getNextItem(id);
             if (activeItem) {
                 setActiveItem(activeItem);
                 setActiveGoal(activeItem.id);
@@ -83,8 +78,8 @@ const ctrDeleteItem = (item, type) => {
             break;
     }
 
-    DataController.deleteItem(item.id);
-    UIController.deleteItem(item.id);
+    DataController.deleteItem(id);
+    UIController.deleteItem(id);
 
     if (parent) {
         parent.calcProgress();
@@ -118,15 +113,8 @@ const ctrEditItemComplete = itemDOM => {
 /**
  *  Complete ITEM
  */
-const ctrCompleteItem = item => {
-    item = DataController.getItemByID(item.id);
-
-    if (item.subItems.length > 0) {
-        if (!confirm('Item contains subitems. Are you sure you want to complete this item?')) {
-            return;
-        }
-    }
-
+const ctrCompleteItem = id => {
+    const item = DataController.getItemByID(id);
     // Data: update status, progress
     item.complete();
     item.calcProgress();
@@ -270,6 +258,31 @@ const updateSubs = id => {
     });
 };
 
+const ctrOpenConfirmWindow = (id, action) => {
+    const item = DataController.getItemByID(id);
+    if (action === 'Complete' && item.subItems.length === 0) {
+        ctrCompleteItem(id);
+        return;
+    }
+
+    UIController.openConfirmWindow(id, action);
+    if(action === 'Delete') UIController.closeContextMenu();
+};
+
+const ctrConfirm = (id, action) => {
+    switch (action) {
+        case 'Delete':
+            ctrDeleteItem(id, DataController.getItemParent(id) ? 'subgoal' : 'goal');
+            break;
+
+        case 'Complete':
+            ctrCompleteItem(id);
+            break;
+    }
+
+    UIController.closeConfirmWindow();
+}
+
 /**
  *  Listeners
  */
@@ -282,6 +295,17 @@ const updateSubs = id => {
             // Save a new item name
             const item = event.target.closest(`.${elementStrings.item}`);
             if (item) ctrEditItemComplete(item);
+        }
+    });
+
+    document.addEventListener('click', event => {
+        const bntCancel = event.target.closest(`.${elementStrings.confirmBtnCancel}`);
+        if (bntCancel) UIController.closeConfirmWindow();
+
+        const btnConfirm = event.target.closest(`.${elementStrings.confirmBtn}`);
+        if (btnConfirm) {
+            const box = event.target.closest(`.${elementStrings.confirmBox}`);
+            ctrConfirm(box.dataset.item, box.dataset.action);
         }
     });
 
@@ -305,11 +329,12 @@ const updateSubs = id => {
             if (className.includes(elementStrings.ctxMenuBtnEdit)) ctrEditItem(item);
 
             // DELETE item
-            if (className.includes(elementStrings.ctxMenuBtnDelete)) ctrDeleteItem(item, type);
+            if (className.includes(elementStrings.ctxMenuBtnDelete))
+                ctrOpenConfirmWindow(item.id, 'Delete');
 
             // COMPLETE ITEM
             const checkboxStatus = target.closest(`.${elementStrings.itemStatus}`);
-            if (checkboxStatus) ctrCompleteItem(item);
+            if (checkboxStatus) ctrOpenConfirmWindow(item.id, 'Complete');
 
             // UNCOMPLETE ITEM
             if (className.includes(elementStrings.ctxMenuBtnUncomplete)) ctrUncompleteItem(item);

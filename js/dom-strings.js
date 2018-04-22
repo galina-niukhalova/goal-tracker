@@ -26,7 +26,14 @@ export const elementStrings = {
     // States
     itemCompleted: 'item--completed',
     goalActived: 'item-goal--active',
-    btnUpActived: 'btn-up--active'
+    btnUpActived: 'btn-up--active',
+
+    // Modal windows
+    confirmBox: 'confirm-box',
+    confirmBtn: 'confirm-btn',
+    confirmBtnClose: 'confirm-btn--close',
+    confirmBtnCancel: 'confirm-btn--cancel',
+    confirmBtnConfirm: 'confirm-btn--confirm'
 };
 
 

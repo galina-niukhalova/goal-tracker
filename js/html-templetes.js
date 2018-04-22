@@ -48,3 +48,24 @@ export const renderContextMenu = item => {
 
     document.getElementById(item.id).insertAdjacentHTML('beforeend', markup);
 };
+
+export const renderConfirmWindow = (id, action) => {
+    const text = {
+        "Delete": 'Are you sure you want to delete item?',
+        "Complete": 'Are you sure you want to complete item which contains subitems? All subitems will be completed too.'
+    }
+
+    const markup = `
+        <div class="${elementStrings.confirmBox}" data-action="${action}" data-item="${id}">
+            <button class="${elementStrings.confirmBtnClose} ${elementStrings.confirmBtnCancel}">
+                <i class="icon ion-close"></i>
+            </button>
+        <p class="confirm-text">${text[action]}</p>
+        <div class="confirm-btns">
+            <button class="${elementStrings.confirmBtn} ${elementStrings.confirmBtnCancel}">Cancel</button>
+            <button class="${elementStrings.confirmBtn} ${elementStrings.confirmBtnConfirm}">${action}</button>
+        </div>
+    </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', markup);
+}

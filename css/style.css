@@ -290,3 +290,60 @@ body {
     font-weight: 100; }
   .comment:focus {
     outline: none; }
+
+.confirm-box {
+  z-index: 300;
+  width: 35vw;
+  height: 30vh;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.25);
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-30%, -50%);
+  display: flex;
+  flex-direction: column; }
+
+.confirm-btn {
+  display: inline-block;
+  border: 2px solid #dee3e8;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1.4rem;
+  color: #49b3c9;
+  font-weight: 400;
+  padding: .5rem 1.5rem;
+  transition: all .2s; }
+  .confirm-btn:hover {
+    border: 2px solid #cad2da; }
+  .confirm-btn:active {
+    transform: translateY(0.5px) scale(0.98); }
+  .confirm-btn--close {
+    margin: .5rem;
+    width: 3rem;
+    height: 3rem;
+    display: block;
+    border: none;
+    outline: none;
+    align-self: flex-end;
+    transition: all .2s; }
+    .confirm-btn--close i {
+      font-size: 1.8rem;
+      color: #49b3c9; }
+    .confirm-btn--close:active {
+      transform: translateY(0.5px) scale(0.98); }
+
+.confirm-text {
+  flex-grow: 1;
+  max-width: 80%;
+  margin: 2rem auto;
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: .5px; }
+
+.confirm-btns {
+  margin: .5rem;
+  align-self: flex-end; }
+  .confirm-btns :not(:last-child) {
+    margin-right: 1rem; }
