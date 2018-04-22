@@ -13,6 +13,7 @@ export const elementStrings = {
     itemComment: 'comment',
 
     // Context menu
+    ctxMenuBtn: 'context-btn', 
     ctxMenu: 'more-options__menu',
     ctxMenuList: 'menu',
     ctxMenuItem: 'menu__item',

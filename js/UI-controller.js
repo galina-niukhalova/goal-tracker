@@ -24,24 +24,24 @@ const addNewItem = (id, name, type) => {
 
 const deleteItem = (id) => {
     const item = document.getElementById(id);
-    if(item)
+    if (item)
         item.parentNode.removeChild(item);
 };
 
-const updateItemProgress = ({id, progress}) => {
+const updateItemProgress = ({ id, progress }) => {
     if (!progress)
         progress = '---';
     else progress =
         `${progress}%`;
 
     const item = document.getElementById(id);
-    if(item) 
+    if (item)
         item
-        .childNodes
-        .forEach(element => {
-            if (element.className === elementStrings.itemProgress)
-                element.textContent = progress;
-        });
+            .childNodes
+            .forEach(element => {
+                if (element.className === elementStrings.itemProgress)
+                    element.textContent = progress;
+            });
 };
 
 const updateItemStatus = (id, status) => {
@@ -55,18 +55,18 @@ const updateItemStatus = (id, status) => {
 
 const completeItem = id => {
     const item = document.getElementById(id);
-    if(item) item.classList.add(elementStrings.itemCompleted);
+    if (item) item.classList.add(elementStrings.itemCompleted);
 
     updateItemStatus(id, true);
-    updateItemProgress({id, progress:100});
+    updateItemProgress({ id, progress: 100 });
 };
 
-const uncompleteItem = ( id, progress=0 ) => {
+const uncompleteItem = (id, progress = 0) => {
     const item = document.getElementById(id);
-    if(item) item.classList.remove(elementStrings.itemCompleted);
+    if (item) item.classList.remove(elementStrings.itemCompleted);
 
     updateItemStatus(id, false);
-    updateItemProgress({id, progress});
+    updateItemProgress({ id, progress });
 };
 
 const updateHeader = (name, progress = 0) => {
@@ -96,13 +96,14 @@ const changeActiveGoal = (id) => {
 };
 
 const toggleContextMenu = item => {
-    if(document.getElementById(item.id).querySelector(`.${elementStrings.ctxMenu}`)) closeContextMenu();
+    if (document.getElementById(item.id).querySelector(`.${elementStrings.ctxMenu}`)) closeContextMenu();
     else renderContextMenu(item);
 };
 
 const closeContextMenu = () => {
     const contextMenu = document.querySelector(`.${elementStrings.ctxMenu}`);
-    contextMenu.parentNode.removeChild(contextMenu);
+    if (contextMenu)
+        contextMenu.parentNode.removeChild(contextMenu);
 };
 
 const showUpButton = () => {

@@ -115,18 +115,19 @@ const ctrEditItemComplete = itemDOM => {
  */
 const ctrCompleteItem = id => {
     const item = DataController.getItemByID(id);
+    
     // Data: update status, progress
     item.complete();
+    updateParents(item.id);
+    updateSubs(item.id);
+
+    // calc item progress
     item.calcProgress();
 
     // UI: update progress
     UIController.updateItemProgress(item);
     UIController.completeItem(item.id);
-
-    updateParents(item.id);
-
-    // complete all children
-    updateSubs(item.id);
+    updateDescriptionHeader();
 };
 
 /**
@@ -266,7 +267,7 @@ const ctrOpenConfirmWindow = (id, action) => {
     }
 
     UIController.openConfirmWindow(id, action);
-    if(action === 'Delete') UIController.closeContextMenu();
+    if (action === 'Delete') UIController.closeContextMenu();
 };
 
 const ctrConfirm = (id, action) => {
@@ -298,13 +299,17 @@ const ctrConfirm = (id, action) => {
         }
     });
 
-    document.addEventListener('click', event => {
-        const bntCancel = event.target.closest(`.${elementStrings.modalBtnCancel}`);
+    document.addEventListener('click', ({ target }) => {
+        // CONTEXT MENU
+        const btnMoreOptions = target.closest(`.${elementStrings.ctxMenuBtn}`);
+        if (!btnMoreOptions) UIController.closeContextMenu();
+
+        const bntCancel = target.closest(`.${elementStrings.modalBtnCancel}`);
         if (bntCancel) UIController.closeModalWindow();
 
-        const btnConfirm = event.target.closest(`.${elementStrings.modalBtn}`);
+        const btnConfirm = target.closest(`.${elementStrings.confirmBtnConfirm}`);
         if (btnConfirm) {
-            const box = event.target.closest(`.${elementStrings.modalBox}`);
+            const box = target.closest(`.${elementStrings.modalBox}`);
             ctrConfirm(box.dataset.item, box.dataset.action);
         }
     });
@@ -321,16 +326,16 @@ const ctrConfirm = (id, action) => {
             // Click on <another item>
             if (className.includes(elementStrings.itemName)) ctrClickOn(item, type);
 
-            // CONTEXT MENU
-            const btnMoreOptions = target.closest(`.${elementStrings.itemContextMenu}`);
-            if (btnMoreOptions) ctrToggleContextMenu(item);
-
             // EDIT item
             if (className.includes(elementStrings.ctxMenuBtnEdit)) ctrEditItem(item);
 
             // DELETE item
             if (className.includes(elementStrings.ctxMenuBtnDelete))
                 ctrOpenConfirmWindow(item.id, 'Delete');
+
+            // CONTEXT MENU 
+            const btnMoreOptions = target.closest(`.${elementStrings.ctxMenuBtn}`);
+            if (btnMoreOptions) ctrToggleContextMenu(item);
 
             // COMPLETE ITEM
             const checkboxStatus = target.closest(`.${elementStrings.itemStatus}`);

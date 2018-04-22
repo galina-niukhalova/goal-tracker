@@ -2,7 +2,7 @@ import { elementStrings } from './dom-strings';
 
 export const renderItem = ({ id, name, progress, status }, parent) => {
     progress ? progress = `${progress}%`
-        : progress = '---';
+        : progress = '0%';
 
     let classItem;
     status ? classItem = `${elementStrings.item} ${elementStrings.itemCompleted}`
@@ -17,7 +17,9 @@ export const renderItem = ({ id, name, progress, status }, parent) => {
                 <div class="${elementStrings.itemProgress}">
                     ${progress}
                 </div>
-                <button class="${elementStrings.itemContextMenu}"></button>
+                <div class="${elementStrings.ctxMenuBtn}">
+                    <button class="${elementStrings.itemContextMenu}"></button>
+                </div>
             <div>`;
 
     parent.insertAdjacentHTML('beforeend', newItem);
