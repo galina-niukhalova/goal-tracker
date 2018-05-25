@@ -410,6 +410,9 @@ body {
   @media only screen and (max-width: 56.25em) {
     .item-active {
       padding: 0 2rem; } }
+  @media only screen and (max-width: 37.5em) {
+    .item-active__name {
+      font-size: 1.8rem; } }
 
 .comment {
   -webkit-tap-highlight-color: transparent;
@@ -465,6 +468,9 @@ body {
   @media only screen and (max-width: 56.25em) {
     .modal-box {
       width: 60%; } }
+  @media only screen and (max-width: 56.25em) {
+    .modal-box {
+      width: 80%; } }
 
 .modal-btn {
   display: inline-block;
