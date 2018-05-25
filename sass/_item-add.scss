@@ -66,9 +66,12 @@
         &:focus { outline: none; }
 
         &:hover {
-            color: $color-violet-3;
-            font-weight: 400;
+            @include respond(hover) {
+                color: $color-violet-3;
+                font-weight: 400;
+            }
         }
+    
 
         &:active { transform: translateY(5%); }
 

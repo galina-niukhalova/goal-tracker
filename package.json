@@ -5,11 +5,12 @@
   "main": "main.js",
   "scripts": {
     "watch:sass": "node-sass sass/main.scss css/style.css -w",
-    "prefix:css": "postcss --use autoprefixer -b 'last 10 versions' css/style.comp.css -o css/style.prefix.css",
-    "build:css": "npm-run-all watch:sass prefix:css",
+    "build:sass": "node-sass sass/main.scss css/style-raw.css",
+    "build:prefix": "postcss --use autoprefixer -b 'last 10 versions' css/style-raw.css -o css/style.css",
+    "build:css": "npm-run-all build:sass build:prefix",
     "build:webpack": "webpack --mode development --watch",
-    "start": "npm-run-all --parallel build:css build:webpack",
-    "test": "babel-node spec/run.js"
+    "start:server": "python -m SimpleHTTPServer",
+    "start": "npm-run-all --parallel start:server watch:sass build:webpack"
   },
   "author": "Galina",
   "license": "MIT",

@@ -29,36 +29,26 @@ body {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 0 40px rgba(0, 0, 0, 0.1);
   grid-column: goal-start / goal-end;
   grid-row: 2 / -1;
-  background-color: #49b3c9;
-  -webkit-tap-highlight-color: transparent; }
+  background-color: #49b3c9; }
   .goal-list .item {
     color: #fff;
     border-bottom: 1px dotted #37a0b5; }
-    @media (hover: hover) {
-      .goal-list .item:hover {
-        background-color: #37a0b5; }
-        .goal-list .item:hover .context-btn {
-          background-color: #37a0b5; } }
+    .goal-list .item:hover {
+      background-color: #37a0b5; }
     .goal-list .item__status--label {
       border: 1px solid #fff; }
     .goal-list .item .context-btn {
-      background-color: #49b3c9; }
-      @media (hover: hover) {
-        .goal-list .item .context-btn {
-          background-color: #37a0b5; } }
-      @media (hover: hover) {
-        .goal-list .item .context-btn:hover .more-options__btn {
+      background-color: #37a0b5; }
+      .goal-list .item .context-btn:hover .more-options__btn {
+        background-color: #fff; }
+        .goal-list .item .context-btn:hover .more-options__btn::before, .goal-list .item .context-btn:hover .more-options__btn::after {
           background-color: #fff; }
-          .goal-list .item .context-btn:hover .more-options__btn::before, .goal-list .item .context-btn:hover .more-options__btn::after {
-            background-color: #fff; } }
     .goal-list .item .more-options__btn {
       background-color: #e6e6e6; }
       .goal-list .item .more-options__btn::before, .goal-list .item .more-options__btn::after {
         background-color: #e6e6e6; }
     .goal-list .item--completed .item__status--label {
       background-color: white; }
-    .goal-list .item-goal--active .context-btn {
-      background-color: #2b7e8e; }
 
 .item-list {
   padding: 2rem; }
@@ -74,28 +64,20 @@ body {
     height: 3.5rem; }
 
 .subgoal-list {
-  flex: 1;
-  -webkit-tap-highlight-color: transparent; }
+  flex: 1; }
   .subgoal-list .item {
     color: #555;
     border-bottom: 1px dotted #d9eef5; }
-    @media (hover: hover) {
-      .subgoal-list .item:hover {
-        background-color: #f6f6f6; }
-        .subgoal-list .item:hover .context-btn {
-          background-color: #f6f6f6; } }
+    .subgoal-list .item:hover {
+      background-color: #f6f6f6; }
     .subgoal-list .item__status--label {
       border: 1px solid #e6e3e9; }
     .subgoal-list .item .context-btn {
-      background-color: #FBFBFB; }
-      @media (hover: hover) {
-        .subgoal-list .item .context-btn {
-          background-color: #f6f6f6; } }
-      @media (hover: hover) {
-        .subgoal-list .item .context-btn:hover .more-options__btn {
+      background-color: #f6f6f6; }
+      .subgoal-list .item .context-btn:hover .more-options__btn {
+        background-color: #555; }
+        .subgoal-list .item .context-btn:hover .more-options__btn::before, .subgoal-list .item .context-btn:hover .more-options__btn::after {
           background-color: #555; }
-          .subgoal-list .item .context-btn:hover .more-options__btn::before, .subgoal-list .item .context-btn:hover .more-options__btn::after {
-            background-color: #555; } }
     .subgoal-list .item .more-options__btn {
       background-color: #bbb; }
       .subgoal-list .item .more-options__btn::before, .subgoal-list .item .more-options__btn::after {
@@ -110,29 +92,27 @@ body {
   .item--completed .item__status--label {
     border: 1px solid #45803F;
     color: #45803F; }
-    @media (hover: hover) {
-      .item--completed .item__status--label:hover {
-        transform: scale(1);
-        color: #45803F;
-        border: 1px solid #45803F; } }
+    .item--completed .item__status--label:hover {
+      transform: scale(1);
+      color: #45803F;
+      border: 1px solid #45803F; }
   .item--completed .item__name {
     text-decoration: line-through #555; }
   .item__status--checkbox {
     display: none; }
   .item__status--label {
-    flex: 0 0 2.5rem;
-    height: 2.5rem;
     margin-right: 1rem;
     display: inline-block;
+    width: 2.5rem;
+    height: 2.5rem;
     color: inherit;
     border-radius: 50%;
     transition: all .2s;
     position: relative; }
-    @media (hover: hover) {
-      .item__status--label:hover {
-        transform: scale(1.1);
-        color: #D4E74F;
-        border: 1px solid #D4E74F; } }
+    .item__status--label:hover {
+      transform: scale(1.1);
+      color: #D4E74F;
+      border: 1px solid #D4E74F; }
     .item__status--label i {
       color: currentColor;
       position: absolute;
@@ -148,33 +128,23 @@ body {
     border: none;
     color: inherit;
     text-decoration: none; }
-    @media only screen and (max-width: 64em) {
-      .item__name {
-        padding: .5rem 0; } }
     .item__name:focus {
       outline: none; }
   .item-goal--active {
     background-color: #2b7e8e; }
-  .item__progress {
-    text-align: right;
-    flex: 0 0 4rem; }
 
-@media (hover: hover) {
-  .item:hover .context-btn {
-    visibility: visible; } }
+.item:hover .context-btn {
+  visibility: visible; }
 
 .context-btn {
-  flex: 0 0 2rem;
   padding-left: 1.5rem;
   padding-right: .5rem;
   align-self: stretch;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  justify-content: center; }
-  @media (hover: hover) {
-    .context-btn {
-      visibility: hidden; } }
+  justify-content: center;
+  visibility: hidden; }
 
 .more-options__btn {
   display: block;
@@ -216,9 +186,8 @@ body {
     transition: all .2s; }
     .menu__item i {
       margin-right: 1rem; }
-    @media (hover: hover) {
-      .menu__item:hover {
-        background-color: #e5e5e5; } }
+    .menu__item:hover {
+      background-color: #e5e5e5; }
 
 .goal-add {
   grid-column: 1 / span 1;
@@ -264,10 +233,9 @@ body {
     position: relative; }
     .item-add__btn:focus {
       outline: none; }
-    @media (hover: hover) {
-      .item-add__btn:hover {
-        color: #544d5e;
-        font-weight: 400; } }
+    .item-add__btn:hover {
+      color: #544d5e;
+      font-weight: 400; }
     .item-add__btn:active {
       transform: translateY(5%); }
     .item-add__btn i {
@@ -363,9 +331,8 @@ body {
   font-weight: 400;
   padding: .5rem 1.5rem;
   transition: all .2s; }
-  @media (hover: hover) {
-    .modal-btn:hover {
-      border: 2px solid #cad2da; } }
+  .modal-btn:hover {
+    border: 2px solid #cad2da; }
   .modal-btn:active {
     transform: translateY(0.5px) scale(0.98); }
   .modal-btn--close {
