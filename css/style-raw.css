@@ -17,23 +17,75 @@ body {
   font-size: 1.6rem; }
 
 .container {
-  min-height: 100vh;
+  width: 100%;
+  height: 100vh;
   margin: auto;
   box-shadow: 0 1px 1rem rgba(0, 0, 0, 0.2);
-  display: grid;
-  grid-template-columns: [goal-start] minmax(30rem, 35vw) [goal-end] minmax(min-content, 1fr) [subgoal-start] 60vw [subgoal-end] 1fr;
-  grid-template-rows: min-content 1fr 10rem;
-  grid-column-gap: 1.5rem; }
+  display: flex;
+  flex-wrap: nowrap; }
+  @media only screen and (max-width: 56.25em) {
+    .container {
+      background-color: #49b3c9; } }
+
+.goal-container {
+  flex: 0 0 30%;
+  display: flex;
+  flex-direction: column; }
+  @media only screen and (max-width: 56.25em) {
+    .goal-container {
+      flex: 1;
+      margin: 4rem 3rem;
+      border-radius: 5px;
+      overflow: hidden; } }
+  @media only screen and (max-width: 37.5em) {
+    .goal-container {
+      margin: 2rem 1rem; } }
+
+.btn-up {
+  margin: 0 2rem; }
+  @media only screen and (max-width: 56.25em) {
+    .btn-up {
+      display: none; } }
+
+.subgoals-container {
+  margin-right: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column; }
+  @media only screen and (max-width: 56.25em) {
+    .subgoals-container {
+      margin: 0;
+      margin: 4rem 3rem;
+      background-color: #fff;
+      border-radius: 5px;
+      overflow: hidden; } }
+  @media only screen and (max-width: 37.5em) {
+    .subgoals-container {
+      margin: 0; } }
+
+.container--visible {
+  display: flex; }
+
+@media only screen and (max-width: 56.25em) {
+  .container--hiden {
+    display: none; } }
 
 .goal-list {
+  flex: 1;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 0 40px rgba(0, 0, 0, 0.1);
-  grid-column: goal-start / goal-end;
-  grid-row: 2 / -1;
   background-color: #49b3c9;
   -webkit-tap-highlight-color: transparent; }
+  @media only screen and (max-width: 56.25em) {
+    .goal-list {
+      box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.1);
+      background-color: #fff; } }
   .goal-list .item {
     color: #fff;
     border-bottom: 1px dotted #37a0b5; }
+    @media only screen and (max-width: 56.25em) {
+      .goal-list .item {
+        color: #555;
+        border-bottom: 1px dotted #d9eef5; } }
     @media (hover: hover) {
       .goal-list .item:hover {
         background-color: #37a0b5; }
@@ -41,11 +93,17 @@ body {
           background-color: #37a0b5; } }
     .goal-list .item__status--label {
       border: 1px solid #fff; }
+      @media only screen and (max-width: 56.25em) {
+        .goal-list .item__status--label {
+          border: 1px solid #e6e3e9; } }
     .goal-list .item .context-btn {
       background-color: #49b3c9; }
       @media (hover: hover) {
         .goal-list .item .context-btn {
           background-color: #37a0b5; } }
+      @media only screen and (max-width: 56.25em) {
+        .goal-list .item .context-btn {
+          background-color: #FBFBFB; } }
       @media (hover: hover) {
         .goal-list .item .context-btn:hover .more-options__btn {
           background-color: #fff; }
@@ -53,32 +111,50 @@ body {
             background-color: #fff; } }
     .goal-list .item .more-options__btn {
       background-color: #e6e6e6; }
+      @media only screen and (max-width: 56.25em) {
+        .goal-list .item .more-options__btn {
+          background-color: #bbb; } }
       .goal-list .item .more-options__btn::before, .goal-list .item .more-options__btn::after {
         background-color: #e6e6e6; }
+        @media only screen and (max-width: 56.25em) {
+          .goal-list .item .more-options__btn::before, .goal-list .item .more-options__btn::after {
+            background-color: #bbb; } }
     .goal-list .item--completed .item__status--label {
       background-color: white; }
     .goal-list .item-goal--active .context-btn {
       background-color: #2b7e8e; }
+      @media only screen and (max-width: 56.25em) {
+        .goal-list .item-goal--active .context-btn {
+          background-color: transparent; } }
 
 .item-list {
-  padding: 2rem; }
+  padding: 2rem;
+  overflow-y: scroll; }
 
 .subgoal-container {
-  grid-row: 2 / 3;
-  grid-column: subgoal-start / subgoal-end;
+  flex: 1;
   display: flex;
   flex-direction: column;
   box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.1); }
   .subgoal-container .add__btn {
     width: 3.5rem;
     height: 3.5rem; }
+  @media only screen and (max-width: 56.25em) {
+    .subgoal-container {
+      margin: 1rem 2rem; } }
 
 .subgoal-list {
   flex: 1;
   -webkit-tap-highlight-color: transparent; }
+  @media only screen and (max-width: 37.5em) {
+    .subgoal-list {
+      padding: 2rem 1rem; } }
   .subgoal-list .item {
     color: #555;
     border-bottom: 1px dotted #d9eef5; }
+    @media only screen and (max-width: 37.5em) {
+      .subgoal-list .item {
+        padding: .5rem 0; } }
     @media (hover: hover) {
       .subgoal-list .item:hover {
         background-color: #f6f6f6; }
@@ -91,6 +167,9 @@ body {
       @media (hover: hover) {
         .subgoal-list .item .context-btn {
           background-color: #f6f6f6; } }
+      @media only screen and (max-width: 56.25em) {
+        .subgoal-list .item .context-btn {
+          background-color: inherit; } }
       @media (hover: hover) {
         .subgoal-list .item .context-btn:hover .more-options__btn {
           background-color: #555; }
@@ -155,6 +234,9 @@ body {
       outline: none; }
   .item-goal--active {
     background-color: #2b7e8e; }
+    @media only screen and (max-width: 56.25em) {
+      .item-goal--active {
+        background-color: transparent; } }
   .item__progress {
     text-align: right;
     flex: 0 0 4rem; }
@@ -221,15 +303,21 @@ body {
         background-color: #e5e5e5; } }
 
 .goal-add {
-  grid-column: 1 / span 1;
   align-self: center;
   background-color: #49b3c9;
   border: none;
   border-bottom: 1px dashed #2b7e8e; }
   .goal-add__input::-webkit-input-placeholder {
     color: #9cd4e0; }
+    @media only screen and (max-width: 56.25em) {
+      .goal-add__input::-webkit-input-placeholder {
+        color: #bbb; } }
   .goal-add__input {
     color: black; }
+  @media only screen and (max-width: 56.25em) {
+    .goal-add {
+      background-color: #fff;
+      border-bottom: 1px dashed #e5e5e5; } }
 
 .subgoal-add {
   border-bottom: 1px dashed #e5e5e5; }
@@ -260,6 +348,7 @@ body {
     font-size: 2rem;
     color: #756C83;
     border: 1px solid #e6e3e9;
+    background-color: #fff;
     transition: all .2s;
     position: relative; }
     .item-add__btn:focus {
@@ -314,11 +403,16 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset; }
   .item-active__progress[value]::-webkit-progress-value {
     background-color: #57a250; }
-  .item-active__comment {
-    grid-row: 3 / -1;
-    grid-column: subgoal-start / subgoal-end; }
+  @media only screen and (max-width: 56.25em) {
+    .item-active__comment {
+      margin: 0 2rem 1rem 2rem;
+      box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.1); } }
+  @media only screen and (max-width: 56.25em) {
+    .item-active {
+      padding: 0 2rem; } }
 
 .comment {
+  -webkit-tap-highlight-color: transparent;
   width: 100%;
   height: 100%;
   padding: 2rem 4rem;
@@ -331,6 +425,23 @@ body {
   .comment:focus {
     outline: none; }
 
+.btn__return {
+  display: none;
+  align-self: flex-start;
+  font-size: 1.6rem;
+  border: none;
+  background-color: transparent;
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
+  border-radius: 5px;
+  padding: .5rem 1.5rem;
+  margin: 1rem 2rem 2rem 2rem;
+  outline: none; }
+  .btn__return span {
+    margin-right: 1rem; }
+  @media only screen and (max-width: 56.25em) {
+    .btn__return {
+      display: block; } }
+
 .modal-window {
   position: fixed;
   top: 0;
@@ -342,7 +453,6 @@ body {
 
 .modal-box {
   width: 35vw;
-  height: 30vh;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 0 4rem 0 rgba(0, 0, 0, 0.25);
@@ -352,6 +462,9 @@ body {
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column; }
+  @media only screen and (max-width: 56.25em) {
+    .modal-box {
+      width: 60%; } }
 
 .modal-btn {
   display: inline-block;
@@ -384,12 +497,16 @@ body {
       transform: translateY(0.5px) scale(0.98); }
 
 .modal-text {
-  flex-grow: 1;
-  max-width: 80%;
-  margin: 2rem 4rem;
+  flex: 1 0 0;
+  width: 80%;
+  margin: 1rem auto 4rem auto;
   font-size: 1.6rem;
   font-weight: 400;
-  letter-spacing: .5px; }
+  letter-spacing: .5px;
+  text-align: left; }
+  @media only screen and (max-width: 56.25em) {
+    .modal-text {
+      width: 90%; } }
 
 .modal-btns {
   margin: .5rem;

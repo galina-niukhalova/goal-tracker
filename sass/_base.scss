@@ -20,17 +20,71 @@ body {
 }
 
 .container {
-    min-height: 100vh;
+    width: 100%;
+    height: 100vh;
     margin: auto;
 
     box-shadow: 0 1px 1rem rgba(black, .2);
 
-    display: grid; 
-    grid-template-columns: [goal-start] minmax(30rem, 35vw) [goal-end] 
-                            minmax(min-content, 1fr) 
-                            [subgoal-start] 60vw [subgoal-end] 
-                            1fr;
-    grid-template-rows: min-content 1fr 10rem; 
+    display: flex;
+    flex-wrap: nowrap;
 
-    grid-column-gap: 1.5rem;
+    @include respond(tab-port) {
+        background-color: $color-main-blue-1;
+    }
+}
+
+.goal-container {
+    flex: 0 0 30%;
+    display: flex;
+    flex-direction: column;
+
+    @include respond(tab-port) {
+        flex: 1;
+        margin: 4rem 3rem;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    @include respond(phone) {
+        margin: 2rem 1rem;
+    }
+}
+
+.btn-up {
+    margin: 0 2rem;
+
+    @include respond(tab-port) {
+        display: none;
+    }
+}
+
+.subgoals-container {
+    margin-right: 2rem;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    @include respond(tab-port) {
+        margin: 0;
+        margin: 4rem 3rem;
+        background-color: $color-white;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    @include respond(phone) {
+        margin: 0;
+    }
+}
+
+.container--visible {
+    display: flex;
+}
+
+.container--hiden {
+    @include respond(tab-port) {
+        display: none;
+    }
 }

@@ -1,15 +1,23 @@
 .goal-list {
+    flex: 1;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 0 40px rgba(0, 0, 0, 0.1);
-
-    grid-column: goal-start / goal-end;
-    grid-row: 2 / -1;
-
     background-color: $color-main-blue-1;
+
     -webkit-tap-highlight-color: transparent;
+
+    @include respond(tab-port) {
+        box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.1);
+        background-color: $color-white;
+    }
 
     & .item {
         color: $color-white;
         border-bottom: 1px dotted $color-secondary-blue-2;
+
+        @include respond(tab-port) {
+            color: $color-main-grey;
+            border-bottom: 1px dotted $color-secondary-blue-3;
+        }
 
         &:hover { 
             @include respond(hover) {
@@ -23,6 +31,11 @@
 
         &__status--label {
             border: 1px solid $color-white;
+
+            @include respond(tab-port) {
+                border: 1px solid $color-violet-2;
+            }
+
         }
 
         & .context-btn {
@@ -30,6 +43,10 @@
 
             @include respond(hover) {
                 background-color: $color-secondary-blue-2;
+            }
+
+            @include respond(tab-port) {
+                background-color: $color-light;
             }
 
             &:hover .more-options__btn {
@@ -45,9 +62,17 @@
         & .more-options__btn {
             background-color: $color-secondary-grey-1;
         
+            @include respond(tab-port) {
+                background-color: $color-grey-light-2;
+            }
+
             &::before, 
             &::after {
                 background-color: $color-secondary-grey-1;
+
+                @include respond(tab-port) {
+                    background-color: $color-grey-light-2;
+                }
             }
         }
 
@@ -56,6 +81,10 @@
         &-goal--active {
             & .context-btn {
                 background-color: $color-secondary-blue-1;
+
+                @include respond(tab-port) {
+                    background-color: transparent;
+                }
             }
         }
     }
@@ -63,14 +92,13 @@
 
 .item-list {
     padding: 2rem;
+    overflow-y: scroll;
 }
 
 .subgoal {
 
-    &-container {
-        grid-row: 2 / 3;
-        grid-column: subgoal-start / subgoal-end;
-    
+    &-container { 
+        flex: 1;   
         display: flex;
         flex-direction: column;
 
@@ -80,15 +108,27 @@
             width: 3.5rem;
             height: 3.5rem;
         }
+
+        @include respond(tab-port) {
+            margin: 1rem 2rem;
+        }
     }
 
     &-list {
         flex: 1;
         -webkit-tap-highlight-color: transparent;
 
+        @include respond(phone) {
+            padding: 2rem 1rem;
+        }
+
         & .item {
             color: $color-main-grey;
             border-bottom: 1px dotted $color-secondary-blue-3;
+
+            @include respond(phone) {
+                padding: .5rem 0;
+            }
 
             &:hover { 
                 @include respond(hover) {
@@ -109,6 +149,10 @@
 
                 @include respond(hover) {
                     background-color: $color-grey-light-3;
+                }
+
+                @include respond(tab-port) {
+                    background-color: inherit;
                 }
 
                 &:hover .more-options__btn {
@@ -214,6 +258,10 @@
 
     &-goal--active {
         background-color: $color-secondary-blue-1;
+
+        @include respond(tab-port) {
+            background-color: transparent;
+        }
     }
 
     &__progress {

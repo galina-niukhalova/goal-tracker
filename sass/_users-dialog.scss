@@ -11,7 +11,6 @@
 
 .modal-box {
     width: 35vw;
-    height: 30vh;
 
     background-color: #fff;
     border-radius: 5px;
@@ -24,6 +23,10 @@
 
     display: flex;
     flex-direction: column;
+
+    @include respond(tab-port) {
+        width: 60%;
+    }
 }
 
 .modal {
@@ -71,14 +74,19 @@
     }
 
     &-text {
-        flex-grow: 1;
+        flex: 1 0 0;
 
-        max-width: 80%;
-        margin: 2rem 4rem;
+        width: 80%;
+        margin: 1rem auto 4rem auto;
 
         font-size: 1.6rem;
         font-weight: 400;
         letter-spacing: .5px;
+        text-align: left;
+
+        @include respond(tab-port) {
+            width: 90%;
+        }
     }
 
     &-btns {

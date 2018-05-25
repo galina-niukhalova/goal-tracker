@@ -1,4 +1,7 @@
 export const elementStrings = {
+    visibleContainer: 'container--visible',
+    hiddenContainer: 'container--hiden',
+
     // Item
     item: 'item',
     itemStatus: 'item__status--checkbox',
@@ -55,7 +58,11 @@ export const elements = {
 
     itemsList: type => document.querySelector(`.${type}-list`),
 
-    btnUp: document.querySelector(`.${elementStrings.btnUp}`)
+    btnUp: document.querySelector(`.${elementStrings.btnUp}`),
+    btnGoBack: document.querySelector('.btn__return'),
+
+    goalContainer: document.querySelector('.goal-container'), 
+    subgoalContainer: document.querySelector('.subgoals-container')
 };
 
 

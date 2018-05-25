@@ -115,7 +115,7 @@ const ctrEditItemComplete = itemDOM => {
  */
 const ctrCompleteItem = id => {
     const item = DataController.getItemByID(id);
-    
+
     // Data: update status, progress
     item.complete();
     updateParents(item.id);
@@ -174,9 +174,15 @@ const ctrGoUp = () => {
     const activeGoal = DataController.getActiveGoal();
     const activeItem = DataController.getItemParent(DataController.getActiveItem());
 
-    setActiveItem(activeItem);
-
-    if (activeGoal === activeItem.id) UIController.hideUpButton();
+    if(activeItem) {
+        setActiveItem(activeItem);
+        if (activeGoal === activeItem.id) {
+            UIController.hideUpButton();
+        }
+    }
+    else {
+        activeGoalContainer();
+    }
 };
 
 /**
@@ -189,6 +195,7 @@ const ctrClickOn = (item, block) => {
         case 'goal':
             setActiveGoal(item.id);
             UIController.hideUpButton();
+            activeSubgoalContainer();
             break;
         case 'subgoal':
             UIController.showUpButton();
@@ -196,6 +203,22 @@ const ctrClickOn = (item, block) => {
     }
 
     setActiveItem(item);
+};
+
+const activeSubgoalContainer = () => {
+    elements.goalContainer.classList.remove(elementStrings.visibleContainer);
+    elements.goalContainer.classList.add(elementStrings.hiddenContainer);
+    
+    elements.subgoalContainer.classList.add(elementStrings.visibleContainer);
+    elements.subgoalContainer.classList.remove(elementStrings.hiddenContainer);
+};
+
+const activeGoalContainer = () => {
+    elements.goalContainer.classList.add(elementStrings.visibleContainer);
+    elements.goalContainer.classList.remove(elementStrings.hiddenContainer);
+    
+    elements.subgoalContainer.classList.remove(elementStrings.visibleContainer);
+    elements.subgoalContainer.classList.add(elementStrings.hiddenContainer);
 };
 
 /**
@@ -324,7 +347,8 @@ const ctrConfirm = (id, action) => {
             const item = target.closest(`.${elementStrings.item}`);
 
             // Click on <another item>
-            if (className.includes(elementStrings.itemName)) ctrClickOn(item, type);
+            if (className.includes(elementStrings.itemName))
+                ctrClickOn(item, type);
 
             // EDIT item
             if (className.includes(elementStrings.ctxMenuBtnEdit)) ctrEditItem(item);
@@ -353,6 +377,7 @@ const ctrConfirm = (id, action) => {
 
     // Return to parent item
     elements.btnUp.addEventListener('click', ctrGoUp);
+    elements.btnGoBack.addEventListener('click', ctrGoUp);
 
     ctrInit();
 

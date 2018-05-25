@@ -24,13 +24,19 @@
     }
 
     &__comment {
-        grid-row: 3 / -1;
-        grid-column: subgoal-start / subgoal-end;
+        @include respond(tab-port) {
+            margin: 0 2rem 1rem 2rem;
+            box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.1);
+        }
     }
 
+    @include respond(tab-port) {
+        padding: 0 2rem;
+    }
 }
 
 .comment {
+    -webkit-tap-highlight-color: transparent;
     width: 100%;
     height: 100%;
     padding: 2rem 4rem;
@@ -49,4 +55,24 @@
 }
 
 
+.btn__return {
+    display: none;
+    align-self: flex-start;
+    font-size: 1.6rem;
+    border: none;
+    background-color: transparent;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
+    border-radius: 5px;
+    padding: .5rem 1.5rem;
+    margin: 1rem 2rem 2rem 2rem;
+    outline: none;
+
+    & span {
+        margin-right: 1rem;
+    }
+
+    @include respond(tab-port) {
+        display: block;
+    }
+}
 
